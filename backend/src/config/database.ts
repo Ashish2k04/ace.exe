@@ -1,4 +1,3 @@
-import { log } from "node:console";
 import {config} from "./config.js"
 import mongoose from "mongoose";
 
