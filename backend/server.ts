@@ -10,8 +10,8 @@ connectToDatabase()
     console.log(`Server is running on port ${PORT}`);
 });
 })
-.catch((error)=>{
-      console.error(error.message);
-      process.exit(1);
+.catch((error: unknown)=>{
+     console.error("Server startup failed:", error);
+     process.exit(1);
 })
 

@@ -1,8 +1,7 @@
 import "dotenv/config";
 
 if(!process.env.MONGODB_URI){
-    console.error("MONGODB_URI is not defined in the environment variables.");
-    process.exit(1);
+    throw new Error("MONGODB_URI is missing in environment variables.");
 }
 
 type Config = {
