@@ -1,25 +1,26 @@
 import Admin from "../models/admin.model.js";
 import type { Request, Response } from "express";
 
-async function register(req: Request, res: Response) {
+async function login(req: Request, res: Response) {
 
     const {email, password} = req.body;
 
     try{
-      // const user = await Admin.findOne({email});
+      const user = await Admin.findOne({email});
 
-      return res.status(403).json({
-        message: "User details.",
-        success: true,
-        email,
-        password
-      })
+      if(!user){
+          return res.status(404).json({
+             message: "No user found with this email address.",
+             success: false,
+        })
+      }
+     
     }
     catch(error){
         console.log(error)
     }
 }
 
-export default {
-    register
+export {
+    login
 }
