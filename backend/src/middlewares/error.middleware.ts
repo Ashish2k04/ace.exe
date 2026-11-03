@@ -8,7 +8,7 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
         success: false,
     }
 
-    if(config.environment === "development"){
+    if(config.NODE_ENV === "development"){
         response.stack = err.stack;
     }
 
