@@ -13,6 +13,6 @@ type Config = {
 export const config: Config = {
     PORT: Number(process.env.PORT) || 8000,
     MONGODB_URI: String(process.env.MONGODB_URI),
-    environment: process.env.environment || "development",
+    environment: process.env.NODE_ENV || "development",
 }
 
