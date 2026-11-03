@@ -56,6 +56,16 @@ async function login(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+async function logout(req: Request, res: Response, next: NextFunction){
+    try{
+       
+    }
+    catch(error: unknown){
+      next(error);
+    }
+}
+
 export {
-    login
+    login,
+    logout
 }
