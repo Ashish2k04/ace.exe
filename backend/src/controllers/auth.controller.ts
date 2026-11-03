@@ -1,7 +1,7 @@
 import Admin from "../models/admin.model.js";
-import type { Request, Response } from "express";
+import type { Request, Response, NextFunction } from "express";
 
-async function login(req: Request, res: Response) {
+async function login(req: Request, res: Response, next: NextFunction) {
 
     const {email, password} = req.body;
 
@@ -35,8 +35,9 @@ async function login(req: Request, res: Response) {
       })
      
     }
-    catch(error){
-        console.log(error)
+    catch(error: unknown){
+        error.status = 500;
+        next(error);
     }
 }
 
