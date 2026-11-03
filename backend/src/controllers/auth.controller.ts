@@ -6,7 +6,7 @@ async function login(req: Request, res: Response) {
     const {email, password} = req.body;
 
     try{
-      const user = await Admin.findOne({email});
+      const user = await Admin.findOne({email}).select("+password");
 
       if(!user){
           return res.status(404).json({
@@ -14,6 +14,25 @@ async function login(req: Request, res: Response) {
              success: false,
         })
       }
+
+      const userPassword = await (user as typeof user & {
+        comparePassword(password: string): Promise<boolean>;
+      }).comparePassword(password);
+
+      if(!userPassword){
+        return res.status(400).json({
+            message: "Invalid credentials.",
+            success: false
+        })
+      }
+
+      return res.status(200).json({
+        message: "User login successfull",
+        success: true,
+        user: {
+            email: user.email
+        }
+      })
      
     }
     catch(error){
