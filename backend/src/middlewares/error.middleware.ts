@@ -1,6 +1,7 @@
 import { config } from "../config/config.js";
+import type { ErrorRequestHandler } from "express";
 
-export function errorHandler(err: any, req: any, res: any, next: any) {
+export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
     const response: { message: string; success: boolean; stack?: string } = {
         message: "Internal Server Error",
