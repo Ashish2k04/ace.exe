@@ -36,7 +36,6 @@ async function login(req: Request, res: Response, next: NextFunction) {
      
     }
     catch(error: unknown){
-        error.status = 500;
         next(error);
     }
 }
