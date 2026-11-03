@@ -1,13 +1,18 @@
 import { config } from "../config/config.js";
-import type { Document } from "mongoose";
+import type { HydratedDocument } from "mongoose";
 import Admin from "../models/admin.model.js";
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-async function sendTokenResponse(user: Document, res: Response, message: string){
+async function sendTokenResponse(user: HydratedDocument<{ email: string; }>, res: Response, message: string){
       const token = jwt.sign({id: user._id}, config.JWT_SECRET, {expiresIn: "1d"});
 
-      res.cookie("token", token);
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: config.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 24 * 60 * 60 * 1000
+      });
 
       return res.status(200).json({
         message: message,
@@ -26,7 +31,7 @@ async function login(req: Request, res: Response, next: NextFunction) {
       const user = await Admin.findOne({email}).select("+password");
 
       if(!user){
-          return res.status(404).json({
+          return res.status(401).json({
              message: "Invalid credentials.",
              success: false,
         })
@@ -37,7 +42,7 @@ async function login(req: Request, res: Response, next: NextFunction) {
       }).comparePassword(password);
 
       if(!userPassword){
-        return res.status(400).json({
+        return res.status(401).json({
             message: "Invalid credentials.",
             success: false
         })
