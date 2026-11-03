@@ -12,13 +12,13 @@ type Config = {
   readonly PORT: number;
   readonly MONGODB_URI: string;
   readonly JWT_SECRET: string;
-  readonly environment?: string;
+  readonly NODE_ENV?: string;
 };
 
 export const config: Config = {
     PORT: Number(process.env.PORT) || 8000,
     MONGODB_URI: String(process.env.MONGODB_URI),
     JWT_SECRET: String(process.env.JWT_SECRET),
-    environment: process.env.NODE_ENV || "development",
+    NODE_ENV: process.env.NODE_ENV || "development",
 }
 
