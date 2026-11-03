@@ -12,7 +12,7 @@ const validateRequest = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const validateLogin = [
-  body('email').isEmail().withMessage('Invalid email address'),
-  body('password').isLength({min: 6}).withMessage('Password must be at least 6 characters long').trim().isEmpty().withMessage('Password cannot be empty'),
+  body('email').trim().isEmail().withMessage('Invalid email address'),
+  body('password').trim().notEmpty().withMessage('Password cannot be empty').isLength({min: 6}).withMessage('Password must be at least 6 characters long'),
   validateRequest
 ];
