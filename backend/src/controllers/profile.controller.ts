@@ -33,7 +33,7 @@ async function createProfile(req: Request, res: Response, next: NextFunction){
             resume
         });
 
-         return res.json({
+         return res.status(201).json({
             name: profile.name,
             profileImage: profile.profileImage,
             about: profile.about,
