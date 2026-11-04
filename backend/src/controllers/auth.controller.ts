@@ -58,7 +58,16 @@ async function login(req: Request, res: Response, next: NextFunction) {
 
 async function logout(req: Request, res: Response, next: NextFunction){
     try{
-       
+       res.clearCookie("token", {
+        httpOnly: true,
+        secure: config.NODE_ENV === "production",
+        sameSite: "strict"
+       });
+
+       return res.status(200).json({
+        message: "User logged out successfully.",
+        success: true
+       })
     }
     catch(error: unknown){
       next(error);
