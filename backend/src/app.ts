@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
-  res.send('Hello From Express with TypeScript!');
+  res.send('Hello, and Welcome to ace.exe!');
 });
 
 app.use("/api/auth", authRouter);
