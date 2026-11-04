@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 const profileSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
-        trim: true
+        trim: true,
+        default: "Default User"
     },
     profileImage: {
         type: String,
