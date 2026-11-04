@@ -6,6 +6,15 @@ info:
 http:
   method: POST
   url: http://localhost:3000/api/user/createProfile
+  body:
+    type: json
+    data: |-
+      {
+        "name": "{{name}}",
+        "profileImage": "{{profileImage}}",
+        "about": "{{about}}",
+        "resume": "{{resume}}"
+      }
   auth: inherit
 
 settings:
