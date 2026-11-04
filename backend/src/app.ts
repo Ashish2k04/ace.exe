@@ -10,7 +10,11 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, and Welcome to ace.exe!');
+  res.send('Hello, Welcome to ace.exe!');
+});
+
+app.get('*name', (req: Request, res: Response) => {
+  res.send(`Can't find ${req.originalUrl} on this server!`);
 });
 
 app.use("/api/auth", authRouter);
