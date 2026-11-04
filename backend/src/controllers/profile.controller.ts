@@ -17,9 +17,9 @@ async function createProfile(req: Request, res: Response, next: NextFunction){
             });
         }
 
-        const profileExists = await Profile.find();
+        const profileExists = await Profile.findOne();
 
-        if(profileExists.length > 0){
+        if(profileExists){
             return res.status(409).json({
                 message: "Profile already exists, so now you can only update it.",
                 success: false
