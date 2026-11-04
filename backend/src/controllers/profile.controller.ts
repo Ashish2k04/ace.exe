@@ -57,13 +57,18 @@ async function getProfile(req: Request, res: Response, next: NextFunction){
            }
 
            return res.status(200).json({
-            message: "User profile fetched successfully.",
-            success: true,
-            user
+               message: "User profile fetched successfully.",
+               success: true,
+               user: {
+                 name: user.name,
+                 pfp: user.profileImage,
+                 about: user.about,
+                 resume: user.resume
+               }
            })
        }
        catch(error){
-        next(error);
+           next(error);
        }
 }
 
