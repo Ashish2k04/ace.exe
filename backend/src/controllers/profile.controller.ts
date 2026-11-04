@@ -45,6 +45,29 @@ async function createProfile(req: Request, res: Response, next: NextFunction){
       }
 }
 
+async function getProfile(req: Request, res: Response, next: NextFunction){
+       try{
+           const user = await Profile.findOne();
+
+           if(!user){
+            return res.status(404).json({
+                message: "No user profile found.",
+                success: false
+            })
+           }
+
+           return res.status(200).json({
+            message: "User profile fetched successfully.",
+            success: true,
+            user
+           })
+       }
+       catch(error){
+        next(error);
+       }
+}
+
 export{
-    createProfile 
+    createProfile,
+    getProfile
 }
