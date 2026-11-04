@@ -61,7 +61,7 @@ async function getProfile(req: Request, res: Response, next: NextFunction){
                success: true,
                user: {
                  name: user.name,
-                 pfp: user.profileImage,
+                 profileImage: user.profileImage,
                  about: user.about,
                  resume: user.resume
                }
