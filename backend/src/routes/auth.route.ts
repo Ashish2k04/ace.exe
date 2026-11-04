@@ -6,6 +6,6 @@ import { rateLimitMiddleware } from '../middlewares/rateLimit.middleware.js';
 const authRouter = Router();
 
 authRouter.post("/login", rateLimitMiddleware(5), validateLogin, login);
-authRouter.post("/logout", rateLimitMiddleware(3), logout);
+authRouter.post("/logout", logout);
 
 export default authRouter;
