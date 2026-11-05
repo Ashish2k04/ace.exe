@@ -11,6 +11,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
+app.use("/api/auth", authRouter);
+app.use("/api/user", profileRouter);
+
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, Welcome to ace.exe!');
 });
@@ -18,9 +21,6 @@ app.get('/', (req: Request, res: Response) => {
 app.get('*name', (req: Request, res: Response) => {
   res.send(`Can't find ${req.originalUrl} on this server!`);
 });
-
-app.use("/api/auth", authRouter);
-app.use("/api/user", profileRouter);
 
 app.use(errorHandler);
 export default app;
