@@ -72,7 +72,49 @@ async function getProfile(req: Request, res: Response, next: NextFunction){
        }
 }
 
+async function updateProfile(req: Request, res: Response, next: NextFunction){
+     try{
+        const {name, profileImage, about, resume} = req.body;
+
+        if(!name && !profileImage && !about && !resume){
+            return res.status(400).json({
+                message: "At least one field is required to update.",
+                success: false
+            });
+        }
+
+        const profile = await Profile.findOneAndUpdate(
+            {},
+            {
+                name,
+                profileImage,
+                about,
+                resume
+            },
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        return res.status(200).json({
+            message: "Field updated successfully.",
+            success: true,
+            user: {
+              name: profile?.name,
+              profileImage: profile?.profileImage,
+              about: profile?.about,
+              resume: profile?.resume
+            }
+        });
+     }
+     catch(error){
+        next(error);
+     }
+}
+
 export{
     createProfile,
-    getProfile
+    getProfile,
+    updateProfile
 }
