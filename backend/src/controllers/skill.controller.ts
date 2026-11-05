@@ -5,7 +5,7 @@ async function createSkill(req: Request, res: Response, next: NextFunction){
     try{
        const {name} = req.body;
 
-       if(!name){
+       if(typeof name !== "string" || !name.trim()){
         return res.status(400).json({
             message: "Input cannot be empty, add atleast one skill.",
             success: false
