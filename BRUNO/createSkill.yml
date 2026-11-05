@@ -6,6 +6,12 @@ info:
 http:
   method: POST
   url: http://localhost:3000/api/skill/createSkill
+  body:
+    type: json
+    data: |-
+      {
+        "name": "typescript"
+      }
   auth: inherit
 
 settings:
