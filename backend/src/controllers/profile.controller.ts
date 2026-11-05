@@ -97,6 +97,13 @@ async function updateProfile(req: Request, res: Response, next: NextFunction){
             }
         );
 
+        if(!profile){
+            return res.status(404).json({
+                message: "Profile not found, You must create a profile first.",
+                success: false
+            })
+        }
+
         return res.status(200).json({
             message: "Field updated successfully.",
             success: true,
