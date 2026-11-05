@@ -92,7 +92,7 @@ async function updateProfile(req: Request, res: Response, next: NextFunction){
                 resume
             },
             {
-                new: true,
+                returnDocument: "after",
                 runValidators: true
             }
         );
