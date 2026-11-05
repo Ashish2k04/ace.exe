@@ -5,7 +5,7 @@ import authMiddleware from "../middlewares/auth.middleware.js";
 const profileRouter = Router();
 
 profileRouter.post("/createProfile", authMiddleware, createProfile);
-profileRouter.get("/getProfile", authMiddleware, getProfile);
+profileRouter.get("/getProfile", getProfile);
 profileRouter.patch("/updateProfile", authMiddleware, updateProfile);
 
 export default profileRouter;
