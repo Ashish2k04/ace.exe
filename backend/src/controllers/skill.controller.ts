@@ -59,7 +59,7 @@ async function deleteSkill(req: Request, res: Response, next: NextFunction){
          const validMongooseId = mongoose.isValidObjectId(skillId);
 
          if(!validMongooseId){
-            return res.status(401).json({
+            return res.status(400).json({
                 message: "Invalid Mongoose Id.",
                 success: false
             })
