@@ -1,5 +1,6 @@
 import type {Request, Response, NextFunction} from "express";
 import Skill from "../models/skill.model.js";
+import mongoose from "mongoose";
 
 async function createSkill(req: Request, res: Response, next: NextFunction){
     try{
@@ -54,6 +55,15 @@ async function getSkills(req: Request, res: Response, next: NextFunction){
 async function deleteSkill(req: Request, res: Response, next: NextFunction){
        try{
          const skillId = req.params.id;
+
+         const validMongooseId = mongoose.isValidObjectId(skillId);
+
+         if(!validMongooseId){
+            return res.status(401).json({
+                message: "Invalid Mongoose Id.",
+                success: false
+            })
+         }
          
          const findSkill = await Skill.findById(skillId);
 
