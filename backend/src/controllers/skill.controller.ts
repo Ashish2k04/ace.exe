@@ -51,7 +51,33 @@ async function getSkills(req: Request, res: Response, next: NextFunction){
     }
 }
 
+async function deleteSkill(req: Request, res: Response, next: NextFunction){
+       try{
+         const skillId = req.params.id;
+         
+         const findSkill = await Skill.findById(skillId);
+
+         if(!findSkill){
+            return res.status(404).json({
+                message: "Skill not found.",
+                success: false
+            })
+         }
+
+         await Skill.findByIdAndDelete(skillId);
+
+         return res.status(200).json({
+            message: "Skill deleted successfully.",
+            success: true
+         })
+       }
+       catch(error){
+        next(error);
+       }
+}
+
 export {
     createSkill,
-    getSkills
+    getSkills,
+    deleteSkill
 }
