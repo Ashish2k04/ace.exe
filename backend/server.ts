@@ -2,7 +2,7 @@ import {config} from './src/config/config.js'
 import app from './src/app.js';
 import {connectToDatabase} from './src/config/database.js'
 
-const PORT = config.PORT
+const PORT = config.PORT || 8000
 
 connectToDatabase()
 .then(()=>{
