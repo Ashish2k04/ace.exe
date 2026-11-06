@@ -12,7 +12,9 @@ async function createSkill(req: Request, res: Response, next: NextFunction){
         })
        }
 
-       const skillExists = await Skill.findOne({name});
+       const toUpperCasee = name.toUpperCase();
+
+       const skillExists = await Skill.findOne({name: toUpperCasee});
 
        if(skillExists){
         return res.status(409).json({
@@ -21,7 +23,7 @@ async function createSkill(req: Request, res: Response, next: NextFunction){
         })
        }
 
-       const skill = await Skill.create({name});
+       const skill = await Skill.create({name: toUpperCasee});
 
        return res.status(201).json({
            message: "Skill created successfully.",
