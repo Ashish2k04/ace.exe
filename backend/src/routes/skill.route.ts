@@ -5,6 +5,6 @@ import authMiddleware from "../middlewares/auth.middleware.js";
 const skillRouter = Router();
 
 skillRouter.post("/createSkill", authMiddleware, createSkill);
-skillRouter.get("/getSkill", getSkills);
+skillRouter.get("/getSkills", getSkills);
 
 export default skillRouter;
