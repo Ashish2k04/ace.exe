@@ -34,6 +34,22 @@ async function createSkill(req: Request, res: Response, next: NextFunction){
     }
 }
 
+async function getSkills(req: Request, res: Response, next: NextFunction){
+    try{
+        const skills = await Skill.find().sort({name: 1});
+
+        return res.status(200).json({
+            message: "All skills fetched.",
+            success: true,
+            skills
+        })
+    }
+    catch(error){
+        next(error);
+    }
+}
+
 export {
-    createSkill
+    createSkill,
+    getSkills
 }
