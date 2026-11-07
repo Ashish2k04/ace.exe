@@ -10,6 +10,10 @@ const profileSchema = new mongoose.Schema({
         type: String,
         default: "https://ik.imagekit.io/tsiwfr1zi/ghost-default.jpg"
     },
+    profileImageFileId: {
+        type: String,
+        trim: true
+    },
     about: {
         type: String,
         trim: true,
