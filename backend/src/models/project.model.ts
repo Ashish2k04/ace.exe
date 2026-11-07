@@ -25,11 +25,11 @@ const projectSchema = new mongoose.Schema({
        required: true,
        trim: true
     },
-    skills: {
+    skills: [{
        type: mongoose.Schema.Types.ObjectId,
        ref: "Skill",
        required: true
-    }
+    }]
 });
 
 const Project = mongoose.model("Project", projectSchema);
