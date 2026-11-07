@@ -25,6 +25,11 @@ const projectSchema = new mongoose.Schema({
        required: true,
        trim: true
     },
+    thumbnailFileId: {
+        type: String,
+        required: true,
+        trim: true
+    },
     skills: [{
        type: mongoose.Schema.Types.ObjectId,
        ref: "Skill",
