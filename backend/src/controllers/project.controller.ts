@@ -1,4 +1,6 @@
 import type {Request, Response, NextFunction} from 'express';
+import Skill from '../models/skill.model.js';
+import mongoose from 'mongoose';
 
 async function createProject(req: Request, res: Response, next: NextFunction){
      try{
@@ -11,7 +13,26 @@ async function createProject(req: Request, res: Response, next: NextFunction){
             });
         }
 
-        
+        for (const id of skills) {
+
+           if(!mongoose.isValidObjectId(id)){
+            return res.status(400).json({
+                message: "Invalid skill ID.",
+                success: false
+            })
+           };
+
+           const skillExists = await Skill.findById(id);
+
+           if(!skillExists){
+            return res.status(404).json({
+                message: "One or more skills not found.",
+                success: false
+            })
+           }
+
+           
+        }
 
      }
      catch(error){
