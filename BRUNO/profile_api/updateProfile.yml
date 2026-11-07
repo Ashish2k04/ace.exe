@@ -1,0 +1,22 @@
+info:
+  name: updateProfile
+  type: http
+  seq: 1
+
+http:
+  method: PATCH
+  url: http://localhost:3000/api/user/updateProfile
+  body:
+    type: json
+    data: |-
+      {
+        "name": "{{name_2}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
