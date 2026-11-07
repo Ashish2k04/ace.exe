@@ -69,7 +69,39 @@ async function getProject(req: Request, res: Response, next: NextFunction){
     }
 }
 
+async function deleteProject(req: Request, res: Response, next: NextFunction){
+    try{
+       const projectId = req.params.id;
+
+       if(!projectId){
+        return res.status(400).json({
+            message: "Field cannot be empty.",
+            success: false
+        })
+       }
+
+       if(!mongoose.isValidObjectId(projectId)){
+        return res.status(401).json({
+            message: "Invalid project ID.",
+            success: false
+        })
+       }
+
+       await Project.findByIdAndDelete(projectId);
+
+       return res.status(200).json({
+        message: "Project deleted successfully.",
+        success: true
+       });
+
+    }
+    catch(error){
+        next(error);
+    }
+}
+
 export {
     createProject,
-    getProject
+    getProject,
+    deleteProject
 }
