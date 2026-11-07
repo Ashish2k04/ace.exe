@@ -21,7 +21,7 @@ type Config = {
 };
 
 export const config: Config = {
-    PORT: Number(process.env.PORT),
+    PORT: Number(process.env.PORT) || 8000,
     MONGODB_URI: String(process.env.MONGODB_URI),
     IMAGEKIT_PRIVATE_KEY: String(process.env.IMAGEKIT_PRIVATE_KEY),
     JWT_SECRET: String(process.env.JWT_SECRET),
