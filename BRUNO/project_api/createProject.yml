@@ -6,6 +6,21 @@ info:
 http:
   method: POST
   url: http://localhost:3000/api/project/createProject
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Qevro AI",
+        "description": "AI-powered search engine built using MERN stack.",
+        "liveUrl": "https://example.com",
+        "githubUrl": "https://github.com/example",
+        "thumbnail": "https://example.com/thumbnail.png",
+        "skills": [
+          "6aede08701a0298ee76ae385",
+          "6aede0a201a0298ee76ae386",
+          "6aede0c201a0298ee76ae382"
+        ]
+      }
   auth: inherit
 
 settings:
