@@ -56,7 +56,7 @@ async function createProject(req: Request, res: Response, next: NextFunction){
 
 async function getProject(req: Request, res: Response, next: NextFunction){
     try{
-        const projects = await Project.find().populate("skills");
+        const projects = await Project.find().populate("skills", "name");
 
         return res.status(200).json({
             message: "Project fetched successfully.",
