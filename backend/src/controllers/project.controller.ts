@@ -1,6 +1,7 @@
 import type {Request, Response, NextFunction} from 'express';
 import Skill from '../models/skill.model.js';
 import mongoose from 'mongoose';
+import Project from '../models/project.model.js';
 
 async function createProject(req: Request, res: Response, next: NextFunction){
      try{
@@ -30,9 +31,22 @@ async function createProject(req: Request, res: Response, next: NextFunction){
                 success: false
             })
            }
-
-           
         }
+
+        const project = await Project.create({
+            title,
+            description,
+            liveUrl,
+            githubUrl,
+            thumbnail,
+            skills
+        });
+
+        return res.status(201).json({
+            message: "Project created successfully.",
+            success: true,
+            project
+        });
 
      }
      catch(error){
