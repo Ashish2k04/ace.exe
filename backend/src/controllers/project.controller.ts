@@ -87,6 +87,15 @@ async function deleteProject(req: Request, res: Response, next: NextFunction){
         })
        }
 
+       const projectExists = await Project.findById(projectId);
+
+       if(!projectExists){
+        return res.status(404).json({
+            message: "No project found with this ID.",
+            success: false
+        })
+       }
+
        await Project.findByIdAndDelete(projectId);
 
        return res.status(200).json({
