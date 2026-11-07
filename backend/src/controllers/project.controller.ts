@@ -54,6 +54,22 @@ async function createProject(req: Request, res: Response, next: NextFunction){
      }
 };
 
+async function getProject(req: Request, res: Response, next: NextFunction){
+    try{
+        const projects = await Project.find();
+
+        return res.status(200).json({
+            message: "Project fetched successfully.",
+            success: true,
+            projects
+        })
+    }
+    catch(error){
+        next(error);
+    }
+}
+
 export {
-    createProject
+    createProject,
+    getProject
 }
