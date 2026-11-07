@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import morgan from "morgan";
 import {errorHandler} from './middlewares/error.middleware.js';
 import skillRouter from './routes/skill.route.js';
+import projectRouter from './routes/project.route.js';
 
 const app = express();
 app.use(express.json());
@@ -15,6 +16,7 @@ app.use(morgan("dev"));
 app.use("/api/auth", authRouter);
 app.use("/api/user", profileRouter);
 app.use("/api/skill", skillRouter);
+app.use("/api/project", projectRouter);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, Welcome to ace.exe!');
