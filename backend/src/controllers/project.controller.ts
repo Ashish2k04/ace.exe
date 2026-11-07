@@ -81,7 +81,7 @@ async function deleteProject(req: Request, res: Response, next: NextFunction){
        }
 
        if(!mongoose.isValidObjectId(projectId)){
-        return res.status(401).json({
+        return res.status(400).json({
             message: "Invalid project ID.",
             success: false
         })
