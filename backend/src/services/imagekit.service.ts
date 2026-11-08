@@ -5,11 +5,11 @@ const imagekit = new ImageKit({
   privateKey: config.IMAGEKIT_PRIVATE_KEY 
 });
 
-async function uploadImage(file: Buffer, fileName: string) {
+async function uploadImage(file: Buffer, fileName: string, folderName: string) {
          const result = imagekit.files.upload({
            file: file.toString('base64'),
            fileName: fileName,
-           folder: 'ace_exe'
+           folder: folderName
      })
 
         return result;
