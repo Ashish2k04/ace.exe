@@ -5,13 +5,19 @@ info:
 
 http:
   method: PATCH
-  url: http://localhost:3000/api/user/updateProfile
+  url: http://localhost:3000/api/user/updateProfile?profileImg=
+  params:
+    - name: profileImg
+      value: ""
+      type: query
   body:
-    type: json
-    data: |-
-      {
-        "name": "{{name_2}}"
-      }
+    type: multipart-form
+    data:
+      - name: profileImg
+        type: file
+        value:
+          - C:\Users\iamfo\Pictures\demo_images\DEMO_USER_1.jpg
+        contentType: image/jpeg
   auth: inherit
 
 settings:
