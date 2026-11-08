@@ -8,15 +8,18 @@ const upload = multer({
     },
 
     fileFilter: (req, file, cb) => {
-        if (file.fieldname === 'profileImg' && !file.mimetype.startsWith('image/')) {
-            return cb(new Error('Only image files are allowed for profile image.'));
+        if (file.fieldname === 'profileImg' || file.fieldname === 'thumbnail') {
+            if (!file.mimetype.startsWith('image/')) {
+                return cb(new Error('Only image files are allowed for profile image and thumbnail.'));
+            }
         }
 
         if (file.fieldname === 'resume' && file.mimetype !== 'application/pdf') {
             return cb(new Error('Only PDF files are allowed for resume.'));
         }
+        
 
-        if (!['profileImg', 'resume'].includes(file.fieldname)) {
+        if (!['profileImg', 'resume', 'thumbnail'].includes(file.fieldname)) {
             return cb(new Error('Unexpected file field.'));
         }
 
