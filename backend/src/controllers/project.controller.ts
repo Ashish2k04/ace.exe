@@ -2,14 +2,16 @@ import type {Request, Response, NextFunction} from 'express';
 import Skill from '../models/skill.model.js';
 import mongoose from 'mongoose';
 import Project from '../models/project.model.js';
+import imagekitUpload, {deleteImage} from '../services/imagekit.service.js';
 
 async function createProject(req: Request, res: Response, next: NextFunction){
      try{
-        const {title, description, liveUrl, githubUrl, thumbnail, skills} = req.body;
+        const {title, description, liveUrl, githubUrl} = req.body;
+        const skills = JSON.parse(req.body.skills || "[]");
          
-        if(!title || !description || !thumbnail || !Array.isArray(skills) || skills.length === 0){
+        if(!title || !description || !Array.isArray(skills) || skills.length === 0){
             return res.status(400).json({
-                message: "Title, description, thumbnail and at least one skill are required.",
+                message: "Title, description and at least one skill are required.",
                 success: false
             });
         }
@@ -33,12 +35,26 @@ async function createProject(req: Request, res: Response, next: NextFunction){
            }
         }
 
+        if(!req.file){
+            return res.status(400).json({
+                message: "Thumbnail is required.",
+                success: false
+            })
+        }
+
+        const uploadThumbnail = await imagekitUpload(req.file.buffer, "project_thumbnail", "/ace_exe/projects");
+
+         if (!uploadThumbnail.url || !uploadThumbnail.fileId) {
+              throw new Error("ImageKit failed to return image URL or image Id.");
+        }
+
         const project = await Project.create({
             title,
             description,
             liveUrl,
             githubUrl,
-            thumbnail,
+            thumbnail: uploadThumbnail.url,
+            thumbnailFileId: uploadThumbnail.fileId,
             skills
         });
 
