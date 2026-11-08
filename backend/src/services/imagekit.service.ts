@@ -15,4 +15,10 @@ async function uploadImage(file: Buffer, fileName: string) {
         return result;
 }
 
+
+async function deleteImage(fileId: string) {
+    return await imagekit.files.delete(fileId);
+}
+
 export default uploadImage;
+export { deleteImage };
