@@ -52,10 +52,6 @@ async function createProfile(req: Request, res: Response, next: NextFunction){
 
         const uploadResume = await imagekitUpload(resumeFile.buffer, "admin_resume");
 
-        console.log("image :", uploadImg);
-        console.log("resume :", uploadResume);
-
-
         if (!uploadImg.url || !uploadImg.fileId) {
               throw new Error("ImageKit failed to return image URL or image Id.");
         }
