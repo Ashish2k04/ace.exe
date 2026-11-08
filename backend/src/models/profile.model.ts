@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
 
-const profileSchema = new mongoose.Schema({
+interface IProfile {
+    name: string;
+    profileImage: string;
+    profileImageFileId?: string;
+    about: string;
+    resume?: string;
+}
+
+const profileSchema = new mongoose.Schema<IProfile>({
     name: {
         type: String,
         trim: true,
@@ -24,6 +32,6 @@ const profileSchema = new mongoose.Schema({
     }
 });
 
-const Profile = mongoose.model("Profile", profileSchema);
+const Profile = mongoose.model<IProfile>("Profile", profileSchema);
 
 export default Profile;
