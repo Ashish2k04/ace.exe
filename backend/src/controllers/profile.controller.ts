@@ -27,13 +27,6 @@ async function createProfile(req: Request, res: Response, next: NextFunction){
             });
         }
 
-        if (!req.files) {
-           return res.status(400).json({
-           message: "Profile image is required.",
-           success: false
-         });
-       }
-
        const files = req.files as {
           [fieldname: string]: Express.Multer.File[];
        };
@@ -110,25 +103,55 @@ async function getProfile(req: Request, res: Response, next: NextFunction){
        }
 }
 
+
 async function updateProfile(req: Request, res: Response, next: NextFunction){
      try{
-        const {name, profileImage, about, resume} = req.body;
+        const {name, about} = req.body;
 
-        if(!name && !profileImage && !about && !resume){
+        const files = req.files as {
+          [fieldname: string]: Express.Multer.File[];
+        } | undefined;
+
+        const profileImg = files?.profileImg?.[0];
+        const resumeFile = files?.resume?.[0];
+
+        if(!name && !about && !profileImg && !resumeFile){
             return res.status(400).json({
                 message: "At least one field is required to update.",
                 success: false
             });
         }
 
+        const updateData: any = {};
+
+        if(name) updateData.name = name;
+        if(about) updateData.about = about;
+
+        if(profileImg){
+            const uploadImg = await imagekitUpload(profileImg.buffer, "admin_pfp");
+
+            if(!uploadImg.url || !uploadImg.fileId){
+                throw new Error("ImageKit failed to return image URL or image Id.");
+            }
+
+            updateData.profileImage = uploadImg.url;
+            updateData.profileImageFileId = uploadImg.fileId;
+        }
+
+        if(resumeFile){
+            const uploadResume = await imagekitUpload(resumeFile.buffer, "admin_resume");
+
+            if(!uploadResume.url || !uploadResume.fileId){
+                throw new Error("ImageKit failed to return resume URL or resume Id.");
+            }
+
+            updateData.resume = uploadResume.url;
+            updateData.resumeFileId = uploadResume.fileId;
+        }
+
         const profile = await Profile.findOneAndUpdate(
             {},
-            {
-                name,
-                profileImage,
-                about,
-                resume
-            },
+            updateData,
             {
                 returnDocument: "after",
                 runValidators: true
@@ -146,10 +169,10 @@ async function updateProfile(req: Request, res: Response, next: NextFunction){
             message: "Field updated successfully.",
             success: true,
             user: {
-              name: profile?.name,
-              profileImage: profile?.profileImage,
-              about: profile?.about,
-              resume: profile?.resume
+              name: profile.name,
+              profileImage: profile.profileImage,
+              about: profile.about,
+              resume: profile.resume
             }
         });
      }
