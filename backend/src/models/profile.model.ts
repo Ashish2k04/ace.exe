@@ -6,6 +6,7 @@ interface IProfile {
     profileImageFileId?: string;
     about: string;
     resume?: string;
+    resumeFileId? : string;
 }
 
 const profileSchema = new mongoose.Schema<IProfile>({
@@ -29,7 +30,11 @@ const profileSchema = new mongoose.Schema<IProfile>({
     },
     resume: {
         type: String,
-    }
+    },
+    resumeFileId: {
+      type: String,
+      trim: true
+   }
 });
 
 const Profile = mongoose.model<IProfile>("Profile", profileSchema);
