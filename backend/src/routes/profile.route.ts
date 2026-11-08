@@ -5,7 +5,7 @@ import upload from "../middlewares/multer.middleware.js";
 
 const profileRouter = Router();
 
-profileRouter.post("/createProfile", authMiddleware, upload.single("profileImg"), createProfile);
+profileRouter.post("/createProfile", authMiddleware, upload.fields([{name: "profileImg", maxCount: 1}, {name: "resume", maxCount: 1}]), createProfile);
 profileRouter.get("/getProfile", getProfile);
 profileRouter.patch("/updateProfile", authMiddleware, updateProfile);
 
