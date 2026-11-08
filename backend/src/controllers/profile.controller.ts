@@ -41,9 +41,9 @@ async function createProfile(req: Request, res: Response, next: NextFunction){
         });
        }
 
-        const uploadImg = await imagekitUpload(profileImg.buffer, "admin_pfp", "ace_exe");
+        const uploadImg = await imagekitUpload(profileImg.buffer, "admin_pfp", "/ace_exe/admin");
 
-        const uploadResume = await imagekitUpload(resumeFile.buffer, "admin_resume", "ace_exe");
+        const uploadResume = await imagekitUpload(resumeFile.buffer, "admin_resume", "/ace_exe/admin");
 
         if (!uploadImg.url || !uploadImg.fileId) {
               throw new Error("ImageKit failed to return image URL or image Id.");
