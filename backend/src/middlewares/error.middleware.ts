@@ -1,9 +1,8 @@
-import type { Request, Response, NextFunction } from "express";
 import { config } from "../config/config.js";
 import type { ErrorRequestHandler } from "express";
 import multer from "multer";
 
-export const errorHandler: ErrorRequestHandler = (err, req: Request, res: Response, next: NextFunction) => {
+export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
     const response: { message: string; success: boolean; stack?: string } = {
         message: "Internal Server Error",
