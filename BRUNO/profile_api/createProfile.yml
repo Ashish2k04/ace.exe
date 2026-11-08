@@ -23,7 +23,7 @@ http:
       - name: resume
         type: file
         value:
-          - C:\Users\iamfo\Downloads\screencapture-ai-google-dev-gemini-api-docs-models-2026-10-03-16_11_25.pdf
+          - C:\Users\iamfo\Downloads\GJAH020104682023_1_2023-07-11.pdf
         contentType: application/pdf
   auth: inherit
 
