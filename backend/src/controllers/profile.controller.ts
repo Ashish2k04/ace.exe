@@ -1,9 +1,10 @@
 import type { Request, Response, NextFunction } from "express";
 import Profile from "../models/profile.model.js";
 import Admin from "../models/admin.model.js";
+import imagekitUpload from "../services/imagekit.service.js"
 
 async function createProfile(req: Request, res: Response, next: NextFunction){
-      const {name, profileImage, about, resume} = req.body;
+      const {name, about} = req.body;
 
       try{
         const userId = (req as any).user.id;
@@ -26,18 +27,59 @@ async function createProfile(req: Request, res: Response, next: NextFunction){
             });
         }
 
+        if (!req.files) {
+           return res.status(400).json({
+           message: "Profile image is required.",
+           success: false
+         });
+       }
+
+       const files = req.files as {
+          [fieldname: string]: Express.Multer.File[];
+       };
+
+       const profileImg = files.profileImg?.[0];
+       const resumeFile = files.resume?.[0];
+
+       if (!profileImg || !resumeFile) {
+        return res.status(400).json({
+           message: "Profile image and resume are required.",
+           success: false
+        });
+       }
+
+        const uploadImg = await imagekitUpload(profileImg.buffer, "admin");
+
+        const uploadResume = await imagekitUpload(resumeFile.buffer, "admin_resume");
+
+        console.log("image :", uploadImg);
+        console.log("resume :", uploadResume);
+
+
+        if (!uploadImg.url || !uploadImg.fileId) {
+              throw new Error("ImageKit failed to return image URL or image Id.");
+        }
+
+        if (!uploadResume.url || !uploadResume.fileId) {
+              throw new Error("ImageKit failed to return resume URL or resume Id.");
+        }
+
         const profile = await Profile.create({
             name,
-            profileImage,
+            profileImage: uploadImg.url,
+            profileImageFileId: uploadImg.fileId,
             about,
-            resume
+            resume: uploadResume.url,
+            resumeFileId: uploadResume.fileId
         });
 
          return res.status(201).json({
             name: profile.name,
             profileImage: profile.profileImage,
+            profileImageFileId: profile.profileImageFileId,
             about: profile.about,
-            resume: profile.resume
+            resume: profile.resume,
+            resumeFileId: profile.resumeFileId
          })
       }
       catch(error){
