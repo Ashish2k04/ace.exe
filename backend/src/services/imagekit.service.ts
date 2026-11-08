@@ -8,7 +8,7 @@ const imagekit = new ImageKit({
 async function uploadImage(file: Buffer, fileName: string) {
          const result = imagekit.files.upload({
            file: file.toString('base64'),
-           fileName: fileName + ".jpg",
+           fileName: fileName,
            folder: 'ace_exe'
      })
 
