@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import Profile from "../models/profile.model.js";
 import Admin from "../models/admin.model.js";
-import imagekitUpload from "../services/imagekit.service.js"
+import imagekitUpload, { deleteImage } from "../services/imagekit.service.js"
 
 async function createProfile(req: Request, res: Response, next: NextFunction){
       const {name, about} = req.body;
@@ -122,6 +122,15 @@ async function updateProfile(req: Request, res: Response, next: NextFunction){
             });
         }
 
+        const oldProfile = await Profile.findOne();
+
+        if(!oldProfile){
+            return res.status(404).json({
+                message: "Profile not found, You must create a profile first.",
+                success: false
+            });
+        }
+
         const updateData: any = {};
 
         if(name) updateData.name = name;
@@ -160,19 +169,27 @@ async function updateProfile(req: Request, res: Response, next: NextFunction){
 
         if(!profile){
             return res.status(404).json({
-                message: "Profile not found, You must create a profile first.",
-                success: false
-            })
+                message: "Profile not found, You must create a profile first."
+                ,success: false
+            });
+        }
+
+        if(profileImg && oldProfile.profileImageFileId){
+            await deleteImage(oldProfile.profileImageFileId);
+        }
+
+        if(resumeFile && oldProfile.resumeFileId){
+            await deleteImage(oldProfile.resumeFileId);
         }
 
         return res.status(200).json({
             message: "Field updated successfully.",
             success: true,
             user: {
-              name: profile.name,
-              profileImage: profile.profileImage,
-              about: profile.about,
-              resume: profile.resume
+                name: profile.name,
+                profileImage: profile.profileImage,
+                about: profile.about,
+                resume: profile.resume
             }
         });
      }
@@ -180,6 +197,7 @@ async function updateProfile(req: Request, res: Response, next: NextFunction){
         next(error);
      }
 }
+
 
 export{
     createProfile,
