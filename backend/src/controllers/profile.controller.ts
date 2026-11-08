@@ -48,7 +48,7 @@ async function createProfile(req: Request, res: Response, next: NextFunction){
         });
        }
 
-        const uploadImg = await imagekitUpload(profileImg.buffer, "admin");
+        const uploadImg = await imagekitUpload(profileImg.buffer, "admin_pfp");
 
         const uploadResume = await imagekitUpload(resumeFile.buffer, "admin_resume");
 
