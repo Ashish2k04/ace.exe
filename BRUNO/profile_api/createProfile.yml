@@ -7,14 +7,24 @@ http:
   method: POST
   url: http://localhost:3000/api/user/createProfile
   body:
-    type: json
-    data: |-
-      {
-        "name": "{{name}}",
-        "profileImage": "{{profileImage}}",
-        "about": "{{about}}",
-        "resume": "{{resume}}"
-      }
+    type: multipart-form
+    data:
+      - name: name
+        type: text
+        value: "{{name}}"
+      - name: profileImg
+        type: file
+        value:
+          - C:\Users\iamfo\Pictures\demo_images\1789137889234.png
+        contentType: image/png
+      - name: about
+        type: text
+        value: "{{about}}"
+      - name: resume
+        type: file
+        value:
+          - C:\Users\iamfo\Downloads\screencapture-ai-google-dev-gemini-api-docs-models-2026-10-03-16_11_25.pdf
+        contentType: application/pdf
   auth: inherit
 
 settings:
