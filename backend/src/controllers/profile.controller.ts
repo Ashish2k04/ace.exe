@@ -137,7 +137,7 @@ async function updateProfile(req: Request, res: Response, next: NextFunction){
         if(about) updateData.about = about;
 
         if(profileImg){
-            const uploadImg = await imagekitUpload(profileImg.buffer, "admin_pfp");
+            const uploadImg = await imagekitUpload(profileImg.buffer, "admin_pfp", "/ace_exe/admin");
 
             if(!uploadImg.url || !uploadImg.fileId){
                 throw new Error("ImageKit failed to return image URL or image Id.");
@@ -148,7 +148,7 @@ async function updateProfile(req: Request, res: Response, next: NextFunction){
         }
 
         if(resumeFile){
-            const uploadResume = await imagekitUpload(resumeFile.buffer, "admin_resume");
+            const uploadResume = await imagekitUpload(resumeFile.buffer, "admin_resume", "/ace_exe/admin");
 
             if(!uploadResume.url || !uploadResume.fileId){
                 throw new Error("ImageKit failed to return resume URL or resume Id.");
