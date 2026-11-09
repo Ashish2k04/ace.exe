@@ -7,20 +7,28 @@ http:
   method: POST
   url: http://localhost:3000/api/project/createProject
   body:
-    type: json
-    data: |-
-      {
-        "title": "Qevro AI",
-        "description": "AI-powered search engine built using MERN stack.",
-        "liveUrl": "https://example.com",
-        "githubUrl": "https://github.com/example",
-        "thumbnail": "https://example.com/thumbnail.png",
-        "skills": [
-          "6aede08701a0298ee76ae385",
-          "6aede0a201a0298ee76ae386",
-          "6aede0c201a0298ee76ae382"
-        ]
-      }
+    type: multipart-form
+    data:
+      - name: title
+        type: text
+        value: '"Qevro Ai"'
+      - name: description
+        type: text
+        value: '"AI-powered search engine built using MERN stack."'
+      - name: liveUrl
+        type: text
+        value: '"https://example.com"'
+      - name: githubUrl
+        type: text
+        value: '"https://example.com/thumbnail.png"'
+      - name: thumbnail
+        type: file
+        value:
+          - C:\Users\iamfo\Pictures\demo_images\IMG_20260926_112047.jpg
+        contentType: image/jpeg
+      - name: skills
+        type: text
+        value: '   ["6aede08701a0298ee76ae385", "6aede0a201a0298ee76ae386", "6aede0c201a0298ee76ae387"]'
   auth: inherit
 
 settings:
