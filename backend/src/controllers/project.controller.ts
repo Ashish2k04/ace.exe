@@ -112,6 +112,8 @@ async function deleteProject(req: Request, res: Response, next: NextFunction){
         })
        }
 
+       await deleteImage(projectExists.thumbnailFileId);
+
        await Project.findByIdAndDelete(projectId);
 
        return res.status(200).json({
