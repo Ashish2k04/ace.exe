@@ -150,7 +150,7 @@ export const ProfilePanel: React.FC<ProfilePanelProps> = ({
         {/* GitHub & LinkedIn side by side */}
         <div className="flex items-center gap-2 pt-1 w-full">
           <a
-            href="https://github.com"
+            href="https://github.com/Ashish2k04"
             target="_blank"
             rel="noopener noreferrer"
             className={`flex-1 py-2 px-3 rounded-xl border ${borderColor} ${borderHover} bg-transparent ${textColor} text-[11px] uppercase tracking-wider font-medium flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer active:scale-[0.99]`}
@@ -160,7 +160,7 @@ export const ProfilePanel: React.FC<ProfilePanelProps> = ({
           </a>
 
           <a
-            href="https://linkedin.com"
+            href="https://linkedin.com/in/ashish2k04"
             target="_blank"
             rel="noopener noreferrer"
             className={`flex-1 py-2 px-3 rounded-xl border ${borderColor} ${borderHover} bg-transparent ${textColor} text-[11px] uppercase tracking-wider font-medium flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer active:scale-[0.99]`}
