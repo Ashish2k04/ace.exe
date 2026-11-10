@@ -93,10 +93,33 @@ const BlackHole: React.FC<BlackHoleProps> = ({ className = '' }) => {
     let animationFrameId: number;
     let emitter: Emitter;
 
+    // Pre-drawn static star layer — painted once per init, sits behind particles
+    let starCanvas: HTMLCanvasElement | null = null;
+
+    const drawStars = (w: number, h: number) => {
+      starCanvas = document.createElement('canvas');
+      starCanvas.width = w;
+      starCanvas.height = h;
+      const sCtx = starCanvas.getContext('2d');
+      if (!sCtx) return;
+      const count = Math.floor((w * h) / 3000);
+      for (let i = 0; i < count; i++) {
+        const x = Math.random() * w;
+        const y = Math.random() * h;
+        const r = Math.random() * 0.9 + 0.1;
+        const opacity = Math.random() * 0.55 + 0.1;
+        sCtx.beginPath();
+        sCtx.arc(x, y, r, 0, Math.PI * 2);
+        sCtx.fillStyle = `rgba(255,255,255,${opacity})`;
+        sCtx.fill();
+      }
+    };
+
     const init = () => {
       const rect = canvas.getBoundingClientRect();
       canvas.width = rect.width;
       canvas.height = rect.height;
+      drawStars(canvas.width, canvas.height);
       emitter = new Emitter(canvas.width / 2, canvas.height / 2);
     };
 
@@ -110,6 +133,10 @@ const BlackHole: React.FC<BlackHoleProps> = ({ className = '' }) => {
 
     const loop = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Draw the static star layer first so particles animate on top
+      if (starCanvas) {
+        ctx.drawImage(starCanvas, 0, 0);
+      }
       emitter.update(ctx);
       animationFrameId = requestAnimationFrame(loop);
     };
