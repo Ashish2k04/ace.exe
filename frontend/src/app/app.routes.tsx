@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router";
 import Login from "../features/auth/pages/Login";
 import {Navigate} from 'react-router'
+import LandingPage from "../features/landing/pages/LandingPage";
 
 export const AppRoutes = createBrowserRouter([
     {
         path: "/",
-        element: <h1>Hello Welcome to ACE.EXE!</h1>
+        element: <LandingPage />
     },
     {
         path: "/admin/login",
