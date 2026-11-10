@@ -1,82 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-
-// Particles Around the Parent
-class Particle {
-  originX: number;
-  originY: number;
-  angle: number;
-  radius: number;
-  opacity: number;
-  distance: number;
-  speed: number;
-  position: { x: number; y: number };
-
-  constructor(x: number, y: number, distance: number) {
-    this.originX = x;
-    this.originY = y;
-    this.angle = Math.random() * 2 * Math.PI;
-    this.radius = Math.random();
-    this.opacity = (Math.random() * 5 + 2) / 10;
-    this.distance = (1 / this.opacity) * distance;
-    this.speed = this.distance * 0.00003;
-
-    this.position = {
-      x: x + this.distance * Math.cos(this.angle),
-      y: y + this.distance * Math.sin(this.angle),
-    };
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = 'rgba(255,255,255,' + this.opacity + ')';
-    ctx.beginPath();
-    ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2, false);
-    ctx.fill();
-    ctx.closePath();
-  }
-
-  update(ctx: CanvasRenderingContext2D) {
-    this.angle += this.speed;
-    this.position = {
-      x: this.originX + this.distance * Math.cos(this.angle),
-      y: this.originY + this.distance * Math.sin(this.angle),
-    };
-    this.draw(ctx);
-  }
-}
-
-class Emitter {
-  position: { x: number; y: number };
-  radius: number;
-  count: number;
-  particles: Particle[];
-
-  constructor(x: number, y: number) {
-    this.position = { x: x, y: y };
-    this.radius = 30;
-    this.count = 3000;
-    this.particles = [];
-
-    for (let i = 0; i < this.count; i++) {
-      this.particles.push(new Particle(this.position.x, this.position.y, this.radius));
-    }
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = 'rgba(0,0,0,1)';
-    ctx.beginPath();
-    ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2, false);
-    ctx.fill();
-    ctx.closePath();
-  }
-
-  update(ctx: CanvasRenderingContext2D) {
-    for (let i = 0; i < this.count; i++) {
-      this.particles[i].update(ctx);
-    }
-    this.draw(ctx);
-  }
-}
+import BlackHole from '../../../components/BlackHole';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -84,45 +8,6 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [touched, setTouched] = useState<{ email?: boolean; password?: boolean }>({});
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationFrameId: number;
-    let emitter: Emitter;
-
-    const init = () => {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = rect.height;
-      emitter = new Emitter(canvas.width / 2, canvas.height / 2);
-    };
-
-    init();
-
-    const handleResize = () => {
-      init();
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    const loop = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      emitter.update(ctx);
-      animationFrameId = requestAnimationFrame(loop);
-    };
-
-    loop();
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   const validateEmail = (val: string): string | undefined => {
     if (!val.trim()) {
@@ -307,11 +192,7 @@ const Login: React.FC = () => {
 
       {/* Right Section – Black Hole Canvas */}
       <section className="absolute inset-0 md:relative md:inset-auto z-0 w-full md:w-1/2 h-full md:min-h-screen flex items-center justify-center overflow-hidden bg-black">
-        <canvas
-          ref={canvasRef}
-          id="particle"
-          className="absolute inset-0 w-full h-full block pointer-events-none md:pointer-events-auto"
-        />
+        <BlackHole className="pointer-events-none md:pointer-events-auto" />
       </section>
     </main>
   );
