@@ -10,7 +10,7 @@ type Data = {
      password: string;
 }
 
-async function register ({email, password}: Data) {
+async function login ({email, password}: Data) {
       try{
          const response = await authApi.post("/auth/login", {email, password});
          console.log(response.data);
@@ -21,4 +21,4 @@ async function register ({email, password}: Data) {
       }
 }
 
-export {register}
+export {login}
