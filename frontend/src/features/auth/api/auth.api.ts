@@ -11,14 +11,9 @@ type Data = {
 }
 
 async function login ({email, password}: Data) {
-      try{
          const response = await authApi.post("/auth/login", {email, password});
          console.log(response.data);
          return response.data
-      }
-      catch(error: unknown){
-        console.log(error)
-      }
 }
 
 export {login}
