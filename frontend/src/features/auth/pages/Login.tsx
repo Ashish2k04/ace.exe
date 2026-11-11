@@ -81,6 +81,10 @@ const Login: React.FC = () => {
       })
       .catch(err => {
         console.log(err)
+        if(err.status === 401){
+          alert('Invalid credentials. Please check your email and password.');
+        } 
+        throw err
       })
     }
   };
