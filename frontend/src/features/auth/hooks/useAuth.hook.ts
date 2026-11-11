@@ -21,7 +21,6 @@ export function useAuth () {
         setLoading(true);
         try{
             const response = await login({email,password});
-            console.log(response.user)
             setUser(response.user);
         }
         catch(error: unknown){
