@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import BlackHole from '../../../components/BlackHole';
 import StarField from '../../../components/StarField';
+import { useAuth } from '../hooks/useAuth.hook';
+import { useNavigate } from 'react-router';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -9,6 +11,8 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [touched, setTouched] = useState<{ email?: boolean; password?: boolean }>({});
+  const {handleLogin} = useAuth();
+  const navigate = useNavigate();
 
   const validateEmail = (val: string): string | undefined => {
     if (!val.trim()) {
@@ -70,6 +74,14 @@ const Login: React.FC = () => {
 
     if (!emailErr && !passwordErr) {
       // Form is valid - UI only, no backend submission
+      handleLogin({email, password})
+      .then(res => {
+        console.log(res)
+        navigate('/')
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
   };
 
