@@ -24,7 +24,8 @@ export function useAuth () {
             setUser(response.user);
         }
         catch(error: unknown){
-           console.log(error)
+           console.log(error);
+           throw error;
         }
         finally{
             setLoading(false);
