@@ -7,10 +7,16 @@ import morgan from "morgan";
 import {errorHandler} from './middlewares/error.middleware.js';
 import skillRouter from './routes/skill.route.js';
 import projectRouter from './routes/project.route.js';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+}));
 app.use(morgan("dev"));
 
 app.use("/api/auth", authRouter);
