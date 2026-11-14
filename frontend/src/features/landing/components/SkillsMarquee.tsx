@@ -117,7 +117,7 @@ export const SkillsMarquee: React.FC<SkillsMarqueeProps> = ({
   return (
     <section
       id="skills"
-      className={`relative rounded-2xl border ${borderColor} p-3.5 sm:p-4 overflow-hidden bg-transparent transition-colors duration-300 ${className}`}
+      className={`relative rounded-2xl border-none p-3.5 sm:p-4 overflow-hidden bg-transparent transition-colors duration-300 ${className}`}
     >
       {/* Subtle edge fades for smooth marquee look */}
       <div
