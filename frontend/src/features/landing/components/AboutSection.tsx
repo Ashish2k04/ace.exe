@@ -17,7 +17,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
   return (
     <section
       id="about"
-      className={`p-4 sm:p-5 rounded-2xl border ${borderColor} bg-transparent transition-colors duration-300 ${className}`}
+      className={`p-4 sm:p-5 rounded-2xl border-none bg-transparent transition-colors duration-300 ${className}`}
     >
       <p
         className={`text-sm sm:text-[15px] font-light leading-relaxed ${textColor} transition-colors duration-300`}
