@@ -116,14 +116,17 @@ export const ProfilePanel: React.FC<ProfilePanelProps> = ({
       {/* Action Buttons */}
       <div className="w-full space-y-2.5">
         {/* Ask AI Button */}
-        <button
-          type="button"
-          onClick={handleAskAi}
-          className={`w-full py-2.5 px-4 rounded-xl border ${borderColor} ${borderHover} bg-transparent ${textColor} text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer active:scale-[0.99]`}
-        >
-          <Sparkles className="w-3.5 h-3.5 opacity-70" />
-          <span>Ask Ai</span>
-        </button>
+        
+         <button
+           type="button"
+           onClick={handleAskAi}
+           className={`relative overflow-hidden w-full py-2.5 px-4 rounded-xl border ${borderColor} ${borderHover} bg-transparent ${textColor} text-xs uppercase tracking-wider font-medium flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer active:scale-[0.99]`}
+         >
+           <span  className={`shine-effect ${theme === 'light' ? 'shine-light' : 'shine-dark'}`}  />
+           <Sparkles className="w-3.5 h-3.5 opacity-70" />
+           <span>Ask AI</span>
+         </button>
+
 
         {/* Get in Touch Button */}
         <button
