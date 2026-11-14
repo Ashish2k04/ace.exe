@@ -22,9 +22,8 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
       <p
         className={`text-sm sm:text-[15px] font-light leading-relaxed ${textColor} transition-colors duration-300`}
       >
-        I'm a <span className={`font-medium ${highlightColor}`}>Full-Stack Developer</span> with a
-        passion for building scalable web applications, solving real-world problems, and exploring
-        new technologies.
+        I'm a <span className={`font-medium ${highlightColor}`}>Full-Stack Developer</span> with a strong interest in backend engineering and building practical web applications. I work with React, TypeScript, Node.js, Express, and MongoDB, focusing on API development, authentication, and application architecture.
+        I'm constantly exploring system design, cloud technologies, and AI to build more reliable and scalable software.
       </p>
     </section>
   );
