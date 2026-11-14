@@ -73,7 +73,7 @@ export const ProfilePanel: React.FC<ProfilePanelProps> = ({
       {/* Avatar Container: Square with rounded corners and Theme Toggle badge */}
       <div className="relative mb-4">
         <div
-          className={`w-24 h-24 sm:w-28 sm:h-28 rounded-2xl border ${borderColor} p-1.5 flex items-center justify-center overflow-hidden transition-colors duration-300`}
+          className={`w-36 h-38 sm:w-32 sm:h-32 rounded-2xl border ${borderColor} p-1.5 flex items-center justify-center overflow-hidden transition-colors duration-300`}
         >
           <img
             src="/ace.png"
