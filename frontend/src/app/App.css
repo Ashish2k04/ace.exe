@@ -1,1 +1,39 @@
 @import "tailwindcss";
+
+.shine-effect {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  transform: skewX(-20deg);
+  animation: shine 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.shine-dark {
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+}
+
+.shine-light {
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(0, 0, 0, 0.18),
+    transparent
+  );
+}
+
+@keyframes shine {
+  0%, 35% {
+    left: -100%;
+  }
+  100% {
+    left: 150%;
+  }
+}
