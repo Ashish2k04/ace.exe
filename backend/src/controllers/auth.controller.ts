@@ -26,15 +26,6 @@ async function sendTokenResponse(user: HydratedDocument<{ email: string; }>, res
 async function register(req: Request, res: Response, next: NextFunction) {
     try{
       const {email, password} = req.body;
-
-      const existingAdmin = await Admin.findOne();
-
-     if(existingAdmin) {
-       return res.status(403).json({
-         message: "Admin registration is already closed.",
-         success: false
-       });
-     }
        
       const userExist = await Admin.findOne({email});
 
