@@ -12,11 +12,16 @@ if(!process.env.JWT_SECRET){
     throw new Error("JWT_SECRET is missing in environment variables.");
 }
 
+if (!process.env.ADMIN_REGISTRATION_SECRET_KEY) {
+    throw new Error("ADMIN_REGISTRATION_SECRET_KEY is missing in environment variables.");
+}
+
 type Config = {
   readonly PORT: number;
   readonly MONGODB_URI: string;
   readonly IMAGEKIT_PRIVATE_KEY: string;
   readonly JWT_SECRET: string;
+  readonly ADMIN_REGISTRATION_SECRET_KEY: string;
   readonly NODE_ENV?: string;
 };
 
@@ -25,6 +30,7 @@ export const config: Config = {
     MONGODB_URI: String(process.env.MONGODB_URI),
     IMAGEKIT_PRIVATE_KEY: String(process.env.IMAGEKIT_PRIVATE_KEY),
     JWT_SECRET: String(process.env.JWT_SECRET),
+    ADMIN_REGISTRATION_SECRET_KEY: String(process.env.ADMIN_REGISTRATION_SECRET_KEY),
     NODE_ENV: process.env.NODE_ENV || "development",
 }
 
