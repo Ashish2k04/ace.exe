@@ -5,7 +5,7 @@ export const verifyAdminRegistrationKey = (req: Request, res: Response, next: Ne
  
        const registrationKey = req.headers["x-admin-registration-key"];
 
-       if(!registrationKey) {
+       if(typeof registrationKey !== "string") {
          return res.status(400).json({
             message: "Registration key is missing from the request headers.",
             success: false
