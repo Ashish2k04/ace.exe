@@ -7,14 +7,14 @@ export const verifyAdminRegistrationKey = (req: Request, res: Response, next: Ne
 
        if(!registrationKey) {
          return res.status(400).json({
-            message: "Registration key not found.",
+            message: "Registration key is missing from the request headers.",
             success: false
          })
        }
 
        if(registrationKey !== config.ADMIN_REGISTRATION_SECRET_KEY){
          return res.status(403).json({
-            message: "Invalid registration key.",
+            message: "Invalid registration key provided in the request headers.",
             success: false
          })
        }
