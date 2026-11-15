@@ -38,7 +38,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <main
-      className={`relative min-h-screen w-full ${pageBg} flex flex-col lg:flex-row antialiased selection:bg-white selection:text-black transition-colors duration-300 overflow-x-hidden`}
+      className={`relative min-h-screen w-full ${pageBg} flex flex-col lg:flex-row antialiased selection:bg-white selection:text-black transition-colors duration-300 overflow-x-hidden select-none`}
     >
       {/* Star field — only on dark theme */}
       <StarField theme={theme} />
