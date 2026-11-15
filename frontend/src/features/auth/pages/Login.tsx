@@ -90,7 +90,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <main className="relative min-h-screen w-full bg-black text-white flex flex-col md:flex-row antialiased selection:bg-white selection:text-black">
+    <main className="relative min-h-screen w-full bg-black text-white flex flex-col md:flex-row antialiased selection:bg-white selection:text-black select-none">
       {/* Star field background */}
       <StarField theme="dark" />
       {/* Left Section – Login Form */}
