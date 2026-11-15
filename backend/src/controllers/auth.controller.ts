@@ -23,11 +23,41 @@ async function sendTokenResponse(user: HydratedDocument<{ email: string; }>, res
       })
 }
 
-async function login(req: Request, res: Response, next: NextFunction) {
-
-    const {email, password} = req.body;
-
+async function register(req: Request, res: Response, next: NextFunction) {
     try{
+      const {email, password} = req.body;
+       
+      const userExist = await Admin.findOne({email});
+
+      if(userExist){
+        return res.status(409).json({
+          message: "User already exist.",
+          success: false
+        })
+      }
+
+      const user = await Admin.create({
+        email: email,
+        password: password
+      });
+
+      return res.status(201).json({
+        message: "User created successfully!",
+        success: true,
+        user: {
+          email: user.email
+        }
+      })
+    }
+    catch(error: unknown) {
+      next(error);
+    }
+}
+
+async function login(req: Request, res: Response, next: NextFunction) {
+    try{
+      const {email, password} = req.body;
+
       const user = await Admin.findOne({email}).select("+password");
 
       if(!user){
@@ -75,6 +105,7 @@ async function logout(req: Request, res: Response, next: NextFunction){
 }
 
 export {
+    register,
     login,
     logout
 }
