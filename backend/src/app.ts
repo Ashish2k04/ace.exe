@@ -7,6 +7,7 @@ import morgan from "morgan";
 import {errorHandler} from './middlewares/error.middleware.js';
 import skillRouter from './routes/skill.route.js';
 import projectRouter from './routes/project.route.js';
+import echoRouter from './routes/echo.route.js';
 import cors from 'cors';
 
 const app = express();
@@ -23,6 +24,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", profileRouter);
 app.use("/api/skill", skillRouter);
 app.use("/api/project", projectRouter);
+app.use("/api/echo", echoRouter);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, Welcome to ace.exe!');
