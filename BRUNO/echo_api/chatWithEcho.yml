@@ -6,6 +6,12 @@ info:
 http:
   method: POST
   url: http://localhost:3000/api/echo/chat
+  body:
+    type: json
+    data: |-
+      {
+        "question": "Tell me ashish's age?"
+      }
   auth: inherit
 
 settings:
