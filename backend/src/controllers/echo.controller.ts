@@ -5,7 +5,7 @@ async function chatWithEcho(req: Request, res: Response, next: NextFunction){
     try{
        const { question } = req.body;
 
-       if (!question || typeof question !== "string") {
+       if (!question || typeof question !== "string" || !question.trim()) {
           return res.status(400).json({
           message: "A valid question is required."
         });
