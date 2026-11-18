@@ -22,7 +22,7 @@ export async function userQuery(question: string) {
      includeMetadata: true
    })
 
-   return JSON.stringify(result)
+   return result;
 }
 
 
