@@ -1,14 +1,16 @@
 import type { Request, Response, NextFunction } from "express";
-
+import { userQuery } from "../services/embedding.service.js";
 
 async function chatWithEcho(req: Request, res: Response, next: NextFunction){
     try{
        const { question } = req.body;
 
-       console.log(question);
+       const response = await userQuery(question);
+
+       console.log(response);
 
        return res.json({
-        question
+        response
        })
     }
     catch(error){
