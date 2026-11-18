@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { userQuery } from "../services/embedding.service.js";
+import { askAi } from "../services/llm.service.js";
 
 async function chatWithEcho(req: Request, res: Response, next: NextFunction){
     try{
@@ -11,12 +12,19 @@ async function chatWithEcho(req: Request, res: Response, next: NextFunction){
         });
       }
 
-       const response = await userQuery(question);
+       const embeddingService = await userQuery(question);
 
-       console.log(response);
+       console.log(embeddingService);
+
+       const aiResponse = await askAi({
+           userQuestion: question,
+           retrievedChunks: embeddingService
+        });
+
+       console.log(aiResponse);
 
        return res.json({
-        response
+         aiResponse
        })
     }
     catch(error){
