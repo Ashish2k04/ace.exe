@@ -8,8 +8,8 @@ interface AskAiInput {
     retrievedChunks: QueryResponse<RecordMetadata>;
 }
 
-const google = new ChatGoogleGenerativeAI({
-    apiKey: config.GOOGLE_API_KEY,
+const gemini = new ChatGoogleGenerativeAI({
+    apiKey: config.GEMINI_API_KEY,
     model: "gemini-3.5-flash-lite",
 });
 
@@ -18,7 +18,7 @@ const groq = new ChatGroq({
     model: "openai/gpt-oss-120b",
 });
 
-const models = google.withFallbacks({
+const models = gemini.withFallbacks({
     fallbacks: [groq]
 })
 
