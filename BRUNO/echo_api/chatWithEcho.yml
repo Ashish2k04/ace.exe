@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "question": "Tell me ashish's age?"
+        "question": "Tell me about ace.exe."
       }
   auth: inherit
 
