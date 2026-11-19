@@ -13,6 +13,11 @@ const google = new ChatGoogleGenerativeAI({
     model: "gemini-3.5-flash-lite",
 });
 
+const groq = new ChatGroq({
+    apiKey: config.GROQ_API_KEY,
+    model: "openai/gpt-oss-120b",
+});
+
 export async function askAi({ userQuestion, retrievedChunks }: AskAiInput) {
 
     const context = retrievedChunks.matches
