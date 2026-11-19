@@ -9,7 +9,7 @@ interface AskAiInput {
 }
 
 const google = new ChatGoogleGenerativeAI({
-    apiKey: config.GEMINI_API_KEY,
+    apiKey: config.GOOGLE_API_KEY,
     model: "gemini-3.5-flash-lite",
 });
 
