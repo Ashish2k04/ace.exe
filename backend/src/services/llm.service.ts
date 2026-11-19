@@ -29,7 +29,7 @@ export async function askAi({ userQuestion, retrievedChunks }: AskAiInput) {
         .filter((text): text is string => typeof text === "string")
         .join("\n\n");
 
-    const response = await google.invoke([
+    const response = await models.invoke([
         {
             role: "system",
             content: `You are Echo, an AI assistant representing Ashish.
