@@ -18,6 +18,10 @@ const groq = new ChatGroq({
     model: "openai/gpt-oss-120b",
 });
 
+const models = google.withFallbacks({
+    fallbacks: [groq]
+})
+
 export async function askAi({ userQuestion, retrievedChunks }: AskAiInput) {
 
     const context = retrievedChunks.matches
