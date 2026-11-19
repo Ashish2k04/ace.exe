@@ -1,5 +1,6 @@
 import type { QueryResponse, RecordMetadata } from "@pinecone-database/pinecone";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { ChatGroq } from "@langchain/groq";
 import { config } from "../config/config.js";
 
 interface AskAiInput {
