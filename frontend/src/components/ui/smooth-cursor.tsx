@@ -19,6 +19,21 @@ export interface SmoothCursorProps {
 
 const DESKTOP_POINTER_QUERY = "(any-hover: hover) and (any-pointer: fine)";
 
+const INTERACTIVE_SELECTORS = [
+  "button",
+  "a",
+  "input",
+  "select",
+  "textarea",
+  "label",
+  "summary",
+  "[role='button']",
+  "[role='link']",
+  "[onclick]",
+  "[tabindex]:not([tabindex='-1'])",
+  ".clickable",
+].join(",");
+
 function isTrackablePointer(pointerType: string) {
   return pointerType !== "touch";
 }
@@ -102,6 +117,7 @@ export function SmoothCursor({
 
   const [isEnabled, setIsEnabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isHoveringInteractive, setIsHoveringInteractive] = useState(false);
 
   const cursorX = useSpring(0, springConfig);
   const cursorY = useSpring(0, springConfig);
@@ -130,6 +146,7 @@ export function SmoothCursor({
 
       if (!mediaQuery.matches) {
         setIsVisible(false);
+        setIsHoveringInteractive(false);
       }
     };
 
@@ -145,6 +162,7 @@ export function SmoothCursor({
     if (!isEnabled) return;
 
     let timeout: ReturnType<typeof setTimeout> | null = null;
+    let rafId = 0;
 
     const updateVelocity = (currentPos: Position) => {
       const currentTime = Date.now();
@@ -165,6 +183,14 @@ export function SmoothCursor({
       if (!isTrackablePointer(e.pointerType)) return;
 
       setIsVisible(true);
+
+      const target = e.target;
+
+      const isInteractive =
+        target instanceof Element &&
+        target.closest(INTERACTIVE_SELECTORS) !== null;
+
+      setIsHoveringInteractive(isInteractive);
 
       const currentPos = { x: e.clientX, y: e.clientY };
       updateVelocity(currentPos);
@@ -201,8 +227,6 @@ export function SmoothCursor({
       }
     };
 
-    let rafId = 0;
-
     const throttledPointerMove = (e: PointerEvent) => {
       if (!isTrackablePointer(e.pointerType) || rafId) return;
 
@@ -212,7 +236,6 @@ export function SmoothCursor({
       });
     };
 
-    // Hide all native cursors, including button and link pointer cursors.
     const previousHtmlCursor = document.documentElement.style.cursor;
     const previousBodyCursor = document.body.style.cursor;
 
@@ -257,7 +280,7 @@ export function SmoothCursor({
         top: cursorY,
         translateX: "-50%",
         translateY: "-50%",
-        rotate: rotation,
+        rotate: isHoveringInteractive ? 0 : rotation,
         scale,
         zIndex: 9999,
         pointerEvents: "none",
@@ -268,7 +291,21 @@ export function SmoothCursor({
       animate={{ opacity: isVisible ? 1 : 0 }}
       transition={{ duration: 0.15 }}
     >
-      {cursor}
+      {isHoveringInteractive ? (
+        <img
+          src="/new-cursor.svg"
+          alt=""
+          draggable={false}
+          style={{
+            width: 32,
+            height: 32,
+            objectFit: "contain",
+            pointerEvents: "none",
+          }}
+        />
+      ) : (
+        cursor
+      )}
     </motion.div>
   );
 }
