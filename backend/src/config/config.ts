@@ -33,8 +33,8 @@ if (!process.env.COHERE_API_KEY) {
     throw new Error("COHERE_API_KEY is missing in environment variables.");
 }
 
-if (!process.env.GOOGLE_API_KEY) {
-    throw new Error("GOOGLE_API_KEY is missing in environment variables.");
+if (!process.env.GEMINI_API_KEY) {
+    throw new Error("GEMINI_API_KEY is missing in environment variables.");
 }
 
 type Config = {
@@ -48,7 +48,7 @@ type Config = {
   readonly PINECONE_INDEX_NAME: string;
   readonly GROQ_API_KEY: string;
   readonly COHERE_API_KEY: string;
-  readonly GOOGLE_API_KEY: string;
+  readonly GEMINI_API_KEY: string;
 };
 
 export const config: Config = {
@@ -62,6 +62,5 @@ export const config: Config = {
     PINECONE_INDEX_NAME: String(process.env.PINECONE_INDEX_NAME),
     GROQ_API_KEY: String(process.env.GROQ_API_KEY),
     COHERE_API_KEY: String(process.env.COHERE_API_KEY),
-    GOOGLE_API_KEY: String(process.env.GOOGLE_API_KEY)
+    GEMINI_API_KEY: String(process.env.GEMINI_API_KEYEMINI)
 }
-
