@@ -21,7 +21,7 @@ export async function userQuery(question: string) {
      topK: 10,
      includeMetadata: true
    })
-
+   
    return result;
 }
 
