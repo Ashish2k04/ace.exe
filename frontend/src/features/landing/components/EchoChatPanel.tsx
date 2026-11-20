@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { X, Send } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import { useEcho } from '../hooks/useEcho.hook';
 
 interface Message {
   id: string;
@@ -21,8 +23,10 @@ interface EchoChatPanelProps {
 
 const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose }) => {
   const isDark = theme === 'dark';
+  const { handleEcho } = useEcho();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const starCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -79,7 +83,7 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, isLoading]);
 
   const addMessage = (text: string, sender: 'user' | 'ai') => {
     setMessages((prev) => [
@@ -88,24 +92,42 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
     ]);
   };
 
-  const handleSend = (text?: string) => {
+  const handleSend = async (text?: string) => {
     const msg = (text || input).trim();
-    if (!msg) return;
+    if (!msg || isLoading) return;
 
     addMessage(msg, 'user');
     setInput('');
+    setIsLoading(true);
 
-    // Demo AI response — replace with actual API call
-    setTimeout(() => {
-      addMessage(
-        "I'm Echo, Ashish's AI assistant. This is a demo response — connect me to the backend to get real answers!",
-        'ai'
-      );
-    }, 800);
+    try {
+      const aiResponse = await handleEcho(msg);
+      let replyText = '';
+      if (typeof aiResponse === 'string') {
+        replyText = aiResponse;
+      } else if (Array.isArray(aiResponse)) {
+        replyText = (aiResponse as any[])
+          .map((item) => (typeof item === 'string' ? item : item?.text || ''))
+          .join('');
+      } else if (aiResponse && typeof aiResponse === 'object') {
+        replyText = (aiResponse as any).text || '';
+      }
+
+      if (replyText) {
+        addMessage(replyText, 'ai');
+      } else {
+        addMessage("Sorry, I didn't get a response. Please try again.", 'ai');
+      }
+    } catch (error) {
+      console.error('Echo API error:', error);
+      addMessage("Sorry, something went wrong while connecting to Echo. Please try again.", 'ai');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey && !isLoading) {
       e.preventDefault();
       handleSend();
     }
@@ -188,7 +210,8 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
                     key={s}
                     type="button"
                     onClick={() => handleSend(s)}
-                    className={`w-full text-left px-4 py-2.5 rounded-xl border ${borderColor} hover:border-current bg-transparent ${textColor} text-xs tracking-wide transition-all duration-200 cursor-pointer active:scale-[0.99]`}
+                    disabled={isLoading}
+                    className={`w-full text-left px-4 py-2.5 rounded-xl border ${borderColor} hover:border-current bg-transparent ${textColor} text-xs tracking-wide transition-all duration-200 cursor-pointer active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     {s}
                   </button>
@@ -213,10 +236,59 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
                         Echo
                       </span>
                     )}
-                    {msg.text}
+                    {msg.sender === 'ai' ? (
+                      <div className="space-y-1.5 leading-relaxed text-xs">
+                        <ReactMarkdown
+                          components={{
+                            p: ({ children }) => <p className="mb-1.5 last:mb-0 leading-relaxed">{children}</p>,
+                            ul: ({ children }) => <ul className="list-disc pl-4 space-y-1 my-1.5">{children}</ul>,
+                            ol: ({ children }) => <ol className="list-decimal pl-4 space-y-1 my-1.5">{children}</ol>,
+                            li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+                            strong: ({ children }) => <strong className="font-semibold text-current">{children}</strong>,
+                            code: ({ children }) => (
+                              <code
+                                className={`px-1 py-0.5 rounded text-[11px] font-mono ${
+                                  isDark ? 'bg-white/10 text-neutral-200' : 'bg-black/10 text-neutral-800'
+                                }`}
+                              >
+                                {children}
+                              </code>
+                            ),
+                            a: ({ href, children }) => (
+                              <a
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline hover:opacity-80"
+                              >
+                                {children}
+                              </a>
+                            ),
+                          }}
+                        >
+                          {typeof msg.text === 'string' ? msg.text : JSON.stringify(msg.text)}
+                        </ReactMarkdown>
+                      </div>
+                    ) : (
+                      <div className="whitespace-pre-wrap">
+                        {typeof msg.text === 'string' ? msg.text : JSON.stringify(msg.text)}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
+              {isLoading && (
+                <div className="flex justify-start">
+                  <div
+                    className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${aiBubbleBg} border ${aiBubbleBorder} ${textColor} rounded-bl-md animate-pulse`}
+                  >
+                    <span className={`text-[10px] font-mono uppercase tracking-widest ${subTextColor} block mb-1`}>
+                      Echo
+                    </span>
+                    Thinking...
+                  </div>
+                </div>
+              )}
               <div ref={messagesEndRef} />
             </>
           )}
@@ -233,15 +305,17 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about Ashish..."
-              className={`flex-1 bg-transparent outline-none text-xs ${textColor} placeholder:${subTextColor}`}
+              disabled={isLoading}
+              placeholder={isLoading ? "Echo is thinking..." : "Ask about Ashish..."}
+              className={`flex-1 bg-transparent outline-none text-xs ${textColor} placeholder:${subTextColor} disabled:opacity-50`}
             />
             <button
               type="button"
               onClick={() => handleSend()}
-              disabled={!input.trim()}
-              className={`w-7 h-7 rounded-lg flex items-center justify-center ${textColor} transition-opacity duration-200 cursor-pointer ${input.trim() ? 'opacity-100' : 'opacity-30'
-                }`}
+              disabled={!input.trim() || isLoading}
+              className={`w-7 h-7 rounded-lg flex items-center justify-center ${textColor} transition-opacity duration-200 cursor-pointer ${
+                input.trim() && !isLoading ? 'opacity-100' : 'opacity-30'
+              }`}
             >
               <Send className="w-3.5 h-3.5" />
             </button>
