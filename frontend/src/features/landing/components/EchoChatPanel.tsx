@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { X, Send } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useEcho } from '../hooks/useEcho.hook';
 
 interface Message {
@@ -14,6 +15,17 @@ const SUGGESTIONS = [
   'What projects has Ashish built?',
   'What are Ashish\'s technical skills?',
 ];
+
+const ensureClickableUrls = (content: string): string => {
+  // Prepend https:// to bare domain links (e.g., steamcommunity.com/id/...) if not already preceded by http:// or https://
+  return content.replace(
+    /(^|[\s(])((?:[a-zA-Z0-9-]+\.)+(?:com|org|io|dev|in|net|co|app)\/[^\s)]+)/gi,
+    (match, prefix, url) => {
+      if (url.startsWith('http://') || url.startsWith('https://')) return match;
+      return `${prefix}https://${url}`;
+    }
+  );
+};
 
 interface EchoChatPanelProps {
   theme: 'dark' | 'light';
@@ -239,6 +251,7 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
                     {msg.sender === 'ai' ? (
                       <div className="space-y-1.5 leading-relaxed text-xs">
                         <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
                           components={{
                             p: ({ children }) => <p className="mb-1.5 last:mb-0 leading-relaxed">{children}</p>,
                             ul: ({ children }) => <ul className="list-disc pl-4 space-y-1 my-1.5">{children}</ul>,
@@ -254,19 +267,24 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
                                 {children}
                               </code>
                             ),
-                            a: ({ href, children }) => (
-                              <a
-                                href={href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="underline hover:opacity-80"
-                              >
-                                {children}
-                              </a>
-                            ),
+                            a: ({ href, children }) => {
+                              const targetHref = href?.startsWith('http://') || href?.startsWith('https://')
+                                ? href
+                                : `https://${href}`;
+                              return (
+                                <a
+                                  href={targetHref}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="underline underline-offset-2 decoration-neutral-500 hover:decoration-current transition-colors break-all cursor-pointer font-medium"
+                                >
+                                  {children}
+                                </a>
+                              );
+                            },
                           }}
                         >
-                          {typeof msg.text === 'string' ? msg.text : JSON.stringify(msg.text)}
+                          {ensureClickableUrls(typeof msg.text === 'string' ? msg.text : JSON.stringify(msg.text))}
                         </ReactMarkdown>
                       </div>
                     ) : (
