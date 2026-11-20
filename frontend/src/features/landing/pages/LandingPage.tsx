@@ -4,6 +4,7 @@ import ProfilePanel from '../components/ProfilePanel';
 import AboutSection from '../components/AboutSection';
 import SkillsMarquee from '../components/SkillsMarquee';
 import ProjectsCarousel from '../components/ProjectsCarousel';
+import EchoChatPanel from '../components/EchoChatPanel';
 import StarField from '../../../components/StarField';
 import { SmoothCursor } from '@/components/ui/smooth-cursor';
 
@@ -15,6 +16,8 @@ const LandingPage: React.FC = () => {
     if (saved === 'dark' || saved === 'light') return saved;
     return 'dark';
   });
+
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(THEME_STORAGE_KEY, theme);
@@ -35,7 +38,6 @@ const LandingPage: React.FC = () => {
 
   const isDark = theme === 'dark';
   const pageBg = isDark ? 'bg-black text-white' : 'bg-white text-black';
-  const dividerColor = isDark ? 'bg-white/10' : 'bg-black/10';
 
   return (
     <main
@@ -49,18 +51,14 @@ const LandingPage: React.FC = () => {
       <div className="relative z-10 w-full max-w-[1800px] mx-auto flex flex-col lg:flex-row flex-1">
 
         {/* Left Section – Profile Panel */}
-        <div className="w-full lg:w-[320px] xl:w-[440px] 2xl:w-[480px] shrink-0 p-6 sm:p-8 lg:min-h-screen flex flex-col justify-center items-center">
+        <div className="w-full lg:w-[320px] xl:w-[380px] 2xl:w-[420px] shrink-0 p-6 sm:p-8 lg:min-h-screen flex flex-col justify-center items-center">
           <ProfilePanel
             theme={theme}
             onToggleTheme={toggleTheme}
+            onAskAi={() => setIsChatOpen(true)}
             className="w-full max-w-sm sm:max-w-md lg:max-w-none"
           />
         </div>
-
-        {/* Vertical Divider — Desktop only */}
-        <div
-          className={`hidden lg:block w-px ${dividerColor} self-stretch my-8 transition-colors duration-300`}
-        />
 
         {/* Right Section – Main Content Panel */}
         <div className="flex-1 w-full min-w-0 px-4 pt-4 pb-8 sm:px-6 sm:pt-6 sm:pb-10 lg:p-5 xl:p-8 2xl:p-10 flex flex-col justify-start lg:justify-center space-y-4 sm:space-y-6">
@@ -70,6 +68,13 @@ const LandingPage: React.FC = () => {
         </div>
 
       </div>
+
+      {/* Echo AI Chat Panel */}
+      <EchoChatPanel
+        theme={theme}
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+      />
     </main>
   );
 };
