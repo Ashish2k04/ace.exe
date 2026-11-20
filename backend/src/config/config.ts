@@ -62,5 +62,5 @@ export const config: Config = {
     PINECONE_INDEX_NAME: String(process.env.PINECONE_INDEX_NAME),
     GROQ_API_KEY: String(process.env.GROQ_API_KEY),
     COHERE_API_KEY: String(process.env.COHERE_API_KEY),
-    GEMINI_API_KEY: String(process.env.GEMINI_API_KEYEMINI)
+    GEMINI_API_KEY: String(process.env.GEMINI_API_KEY)
 }
