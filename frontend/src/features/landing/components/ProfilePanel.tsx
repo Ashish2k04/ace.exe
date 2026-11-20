@@ -36,12 +36,14 @@ const LinkedinIcon: React.FC<{ className?: string }> = ({ className = 'w-3.5 h-3
 interface ProfilePanelProps {
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
+  onAskAi?: () => void;
   className?: string;
 }
 
 export const ProfilePanel: React.FC<ProfilePanelProps> = ({
   theme,
   onToggleTheme,
+  onAskAi,
   className = '',
 }) => {
   const isDark = theme === 'dark';
@@ -61,9 +63,7 @@ export const ProfilePanel: React.FC<ProfilePanelProps> = ({
   };
 
   const handleAskAi = () => {
-    // Interactive UI feedback
-    const msg = "AI Assistant will be available soon!";
-    alert(msg);
+    onAskAi?.();
   };
 
   return (
@@ -73,7 +73,7 @@ export const ProfilePanel: React.FC<ProfilePanelProps> = ({
       {/* Avatar Container: Square with rounded corners and Theme Toggle badge */}
       <div className="relative mb-4">
         <div
-          className={`w-36 h-38 sm:w-32 sm:h-32 rounded-2xl border ${borderColor} p-1.5 flex items-center justify-center overflow-hidden transition-colors duration-300`}
+          className={`w-40 h-40 sm:w-36 sm:h-36 rounded-2xl border ${borderColor} p-1.5 flex items-center justify-center overflow-hidden transition-colors duration-300`}
         >
           <img
             src="/ace.png"
