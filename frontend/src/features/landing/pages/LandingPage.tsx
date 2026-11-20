@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import ProfilePanel from '../components/ProfilePanel';
 import AboutSection from '../components/AboutSection';
