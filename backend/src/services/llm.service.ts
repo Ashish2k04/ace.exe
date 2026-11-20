@@ -2,6 +2,7 @@ import type { QueryResponse, RecordMetadata } from "@pinecone-database/pinecone"
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatGroq } from "@langchain/groq";
 import { config } from "../config/config.js";
+import { ECHO_SYSTEM_PROMPT } from "../prompts/echo.prompt.js";
 
 interface AskAiInput {
     userQuestion: string;
@@ -32,11 +33,7 @@ export async function askAi({ userQuestion, retrievedChunks }: AskAiInput) {
     const response = await models.invoke([
         {
             role: "system",
-            content: `You are Echo, an AI assistant representing Ashish.
-
-            Answer the user's question using the provided context.
-            If the context does not contain the answer, clearly say you don't have that information.
-            Do not invent facts.`,
+            content: ECHO_SYSTEM_PROMPT,
         },
         {
             role: "user",
