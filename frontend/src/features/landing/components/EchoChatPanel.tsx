@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { X, Send, Bot } from 'lucide-react';
+import { X, Send } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -115,17 +115,15 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
     <>
       {/* Backdrop overlay */}
       <div
-        className={`fixed inset-0 z-40 transition-opacity duration-300 ${
-          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        } bg-black/40`}
+        className={`fixed inset-0 z-40 transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          } bg-black/40`}
         onClick={onClose}
       />
 
       {/* Chat Panel */}
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-full sm:w-[400px] md:w-[420px] flex flex-col ${panelBg} border-l ${borderColor} transition-transform duration-300 ease-out overflow-hidden ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed top-0 right-0 z-50 h-full w-full sm:w-[400px] md:w-[420px] flex flex-col ${panelBg} border-l ${borderColor} transition-transform duration-300 ease-out overflow-hidden ${isOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
       >
         {/* Star background canvas */}
         <canvas
@@ -138,9 +136,13 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
         <div className={`relative z-10 flex items-center justify-between px-5 py-4 border-b ${borderColor}`}>
           <div className="flex items-center gap-2.5">
             <div
-              className={`w-8 h-8 rounded-lg border ${borderColor} flex items-center justify-center`}
+              className={`w-8 h-8 rounded-lg border ${isDark ? 'border-white' : 'border-black'} flex items-center justify-center`}
             >
-              <Bot className="w-4 h-4 opacity-70" />
+              <img
+                src="/black-hole.svg"
+                alt="Echo Bot"
+                className={`w-4 h-4 object-contain ${isDark ? 'invert' : ''}`}
+              />
             </div>
             <div>
               <h2 className={`text-sm font-semibold tracking-wide ${textColor}`}>Echo</h2>
@@ -164,9 +166,13 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
             <div className="flex flex-col items-center justify-center h-full gap-5">
               {/* Empty state */}
               <div
-                className={`w-14 h-14 rounded-2xl border ${borderColor} flex items-center justify-center`}
+                className={`w-14 h-14 rounded-2xl border ${isDark ? 'border-white' : 'border-black'} flex items-center justify-center`}
               >
-                <Bot className={`w-7 h-7 ${subTextColor}`} />
+                <img
+                  src="/black-hole.svg"
+                  alt="Echo Bot"
+                  className={`w-7 h-7 object-contain ${isDark ? 'invert' : ''}`}
+                />
               </div>
               <div className="text-center space-y-1">
                 <p className={`text-sm font-medium ${textColor}`}>Hey, I'm Echo!</p>
@@ -197,11 +203,10 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
                   className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${
-                      msg.sender === 'user'
-                        ? `${userBubbleBg} ${textColor} rounded-br-md`
-                        : `${aiBubbleBg} border ${aiBubbleBorder} ${textColor} rounded-bl-md`
-                    }`}
+                    className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${msg.sender === 'user'
+                      ? `${userBubbleBg} ${textColor} rounded-br-md`
+                      : `${aiBubbleBg} border ${aiBubbleBorder} ${textColor} rounded-bl-md`
+                      }`}
                   >
                     {msg.sender === 'ai' && (
                       <span className={`text-[10px] font-mono uppercase tracking-widest ${subTextColor} block mb-1`}>
@@ -235,9 +240,8 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
               type="button"
               onClick={() => handleSend()}
               disabled={!input.trim()}
-              className={`w-7 h-7 rounded-lg flex items-center justify-center ${textColor} transition-opacity duration-200 cursor-pointer ${
-                input.trim() ? 'opacity-100' : 'opacity-30'
-              }`}
+              className={`w-7 h-7 rounded-lg flex items-center justify-center ${textColor} transition-opacity duration-200 cursor-pointer ${input.trim() ? 'opacity-100' : 'opacity-30'
+                }`}
             >
               <Send className="w-3.5 h-3.5" />
             </button>
