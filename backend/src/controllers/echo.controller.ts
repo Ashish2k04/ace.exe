@@ -14,14 +14,10 @@ async function chatWithEcho(req: Request, res: Response, next: NextFunction){
 
        const embeddingService = await userQuery(question);
 
-       console.log(embeddingService);
-
        const aiResponse = await askAi({
            userQuestion: question,
            retrievedChunks: embeddingService
         });
-
-       console.log(aiResponse);
 
        return res.json({
          aiResponse
