@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { X, Send, Bot } from 'lucide-react';
 
 interface Message {
@@ -25,6 +25,49 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const starCanvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Draw stars scoped to the chat panel container
+  const drawStars = useCallback(() => {
+    const canvas = starCanvasRef.current;
+    if (!canvas) return;
+    const parent = canvas.parentElement;
+    if (!parent) return;
+
+    canvas.width = parent.offsetWidth;
+    canvas.height = parent.offsetHeight;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const starCount = Math.floor((canvas.width * canvas.height) / 3500);
+    const starColor = isDark ? '255,255,255' : '0,0,0';
+
+    for (let i = 0; i < starCount; i++) {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
+      const radius = Math.random() * 0.8 + 0.1;
+      const opacity = Math.random() * 0.5 + 0.1;
+
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${starColor},${opacity})`;
+      ctx.fill();
+    }
+  }, [isDark]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    // Small delay so the panel has finished sliding in and has dimensions
+    const timer = setTimeout(drawStars, 350);
+    window.addEventListener('resize', drawStars);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', drawStars);
+    };
+  }, [isOpen, drawStars]);
 
   const borderColor = isDark ? 'border-white/20' : 'border-black/20';
   const textColor = isDark ? 'text-white' : 'text-black';
@@ -72,18 +115,27 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
     <>
       {/* Backdrop overlay */}
       <div
-        className={`fixed inset-0 z-40 transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-          } bg-black/40`}
+        className={`fixed inset-0 z-40 transition-opacity duration-300 ${
+          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        } bg-black/40`}
         onClick={onClose}
       />
 
       {/* Chat Panel */}
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-full sm:w-[400px] md:w-[420px] flex flex-col ${panelBg} border-l ${borderColor} transition-transform duration-300 ease-out ${isOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
+        className={`fixed top-0 right-0 z-50 h-full w-full sm:w-[400px] md:w-[420px] flex flex-col ${panelBg} border-l ${borderColor} transition-transform duration-300 ease-out overflow-hidden ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
       >
+        {/* Star background canvas */}
+        <canvas
+          ref={starCanvasRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0 w-full h-full"
+        />
+
         {/* Header */}
-        <div className={`flex items-center justify-between px-5 py-4 border-b ${borderColor}`}>
+        <div className={`relative z-10 flex items-center justify-between px-5 py-4 border-b ${borderColor}`}>
           <div className="flex items-center gap-2.5">
             <div
               className={`w-8 h-8 rounded-lg border ${borderColor} flex items-center justify-center`}
@@ -107,7 +159,7 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto px-4 py-5 space-y-3">
+        <div className="relative z-10 flex-1 overflow-y-auto px-4 py-5 space-y-3">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-5">
               {/* Empty state */}
@@ -145,10 +197,11 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
                   className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${msg.sender === 'user'
-                      ? `${userBubbleBg} ${textColor} rounded-br-md`
-                      : `${aiBubbleBg} border ${aiBubbleBorder} ${textColor} rounded-bl-md`
-                      }`}
+                    className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${
+                      msg.sender === 'user'
+                        ? `${userBubbleBg} ${textColor} rounded-br-md`
+                        : `${aiBubbleBg} border ${aiBubbleBorder} ${textColor} rounded-bl-md`
+                    }`}
                   >
                     {msg.sender === 'ai' && (
                       <span className={`text-[10px] font-mono uppercase tracking-widest ${subTextColor} block mb-1`}>
@@ -165,9 +218,9 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
         </div>
 
         {/* Input Area */}
-        <div className={`px-4 pb-4 pt-2 border-t ${borderColor}`}>
+        <div className={`relative z-10 px-4 pb-4 pt-2 border-t ${borderColor}`}>
           <div
-            className={`flex items-center gap-2 rounded-xl border ${borderColor} px-3 py-2 transition-colors duration-200 focus-within:border-current`}
+            className={`flex items-center gap-2 rounded-xl border ${borderColor} px-3 py-2 transition-colors duration-200 focus-within:border-current bg-transparent`}
           >
             <input
               ref={inputRef}
@@ -182,8 +235,9 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
               type="button"
               onClick={() => handleSend()}
               disabled={!input.trim()}
-              className={`w-7 h-7 rounded-lg flex items-center justify-center ${textColor} transition-opacity duration-200 cursor-pointer ${input.trim() ? 'opacity-100' : 'opacity-30'
-                }`}
+              className={`w-7 h-7 rounded-lg flex items-center justify-center ${textColor} transition-opacity duration-200 cursor-pointer ${
+                input.trim() ? 'opacity-100' : 'opacity-30'
+              }`}
             >
               <Send className="w-3.5 h-3.5" />
             </button>
