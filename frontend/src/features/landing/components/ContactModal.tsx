@@ -82,6 +82,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ theme, isOpen, onClo
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Validate a single field
   const validateField = (field: keyof FormState, value: string): string | undefined => {
@@ -133,6 +134,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({ theme, isOpen, onClo
     if (successMessage) {
       setSuccessMessage(null);
     }
+
+    if (submitError) {
+      setSubmitError(null);
+    }
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -144,29 +149,58 @@ export const ContactModal: React.FC<ContactModalProps> = ({ theme, isOpen, onClo
     setErrors((prev) => ({ ...prev, [key]: fieldError }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Mark all fields as touched
+    // Keep the existing client-side validation.
     setTouched({ name: true, email: true, message: true });
 
     const formErrors = validateForm(formData);
     setErrors(formErrors);
 
-    if (Object.keys(formErrors).length > 0) {
-      return;
-    }
+    if (Object.keys(formErrors).length > 0) return;
 
     setIsSubmitting(true);
+    setSuccessMessage(null);
+    setSubmitError(null);
 
-    // Frontend-only confirmation as strictly requested (no backend/API calls)
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSuccessMessage('Form is ready! Message submission will be connected soon.');
+    try {
+      const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+
+      if (!accessKey) {
+        throw new Error('Web3Forms access key is not configured.');
+      }
+
+      const payload = new FormData(e.currentTarget);
+      payload.append('access_key', accessKey);
+      payload.append('subject', 'New Contact Form Submission - ace.exe');
+      payload.append('from_name', 'ace.exe Portfolio');
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: payload,
+      });
+
+      const result: { success: boolean; message?: string } = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Unable to send your message. Please try again.');
+      }
+
+      setSuccessMessage('Message sent successfully! Thanks for reaching out.');
       setFormData({ name: '', email: '', message: '' });
       setTouched({});
       setErrors({});
-    }, 400);
+    } catch (error) {
+      console.error('Contact form submission failed:', error);
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong. Please try again.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Keyboard navigation, focus management & scroll lock
@@ -285,6 +319,15 @@ export const ContactModal: React.FC<ContactModalProps> = ({ theme, isOpen, onClo
           </div>
         )}
 
+        {submitError && (
+          <div
+            className="mb-4 p-3 rounded-xl border border-red-500/30 bg-red-500/10 text-red-300 text-xs"
+            role="alert"
+          >
+            {submitError}
+          </div>
+        )}
+
         {/* Contact Form */}
         <form onSubmit={handleSubmit} noValidate className="space-y-3">
           {/* Name Field */}
@@ -383,7 +426,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ theme, isOpen, onClo
             className={`relative overflow-hidden w-full py-2.5 px-4 rounded-xl border ${borderColor} hover:border-current bg-transparent ${textColor} text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             <span className={`shine-effect ${theme === 'light' ? 'shine-light' : 'shine-dark'}`} />
-            <span>{isSubmitting ? 'VALIDATING...' : 'SUBMIT'}</span>
+            <span>{isSubmitting ? 'SENDING...' : 'SUBMIT'}</span>
           </button>
         </form>
 
