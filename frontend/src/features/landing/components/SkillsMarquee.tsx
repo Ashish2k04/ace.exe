@@ -31,7 +31,6 @@ export const SkillsMarquee: React.FC<SkillsMarqueeProps> = ({
   className = '',
 }) => {
   const isDark = theme === 'dark';
-  const borderColor = isDark ? 'border-white/15' : 'border-black/15';
   const pillBorder = isDark ? 'border-white/20 hover:border-white' : 'border-black/20 hover:border-black';
   const textColor = isDark ? 'text-neutral-300 hover:text-white' : 'text-neutral-700 hover:text-black';
 
