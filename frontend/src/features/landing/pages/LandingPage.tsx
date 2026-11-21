@@ -4,6 +4,7 @@ import AboutSection from '../components/AboutSection';
 import SkillsMarquee from '../components/SkillsMarquee';
 import ProjectsCarousel from '../components/ProjectsCarousel';
 import EchoChatPanel from '../components/EchoChatPanel';
+import ContactModal from '../components/ContactModal';
 import StarField from '../../../components/StarField';
 import { SmoothCursor } from '@/components/ui/smooth-cursor';
 
@@ -17,6 +18,7 @@ const LandingPage: React.FC = () => {
   });
 
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(THEME_STORAGE_KEY, theme);
@@ -55,6 +57,7 @@ const LandingPage: React.FC = () => {
             theme={theme}
             onToggleTheme={toggleTheme}
             onAskAi={() => setIsChatOpen(true)}
+            onGetInTouch={() => setIsContactOpen(true)}
             className="w-full max-w-sm sm:max-w-md lg:max-w-none"
           />
         </div>
@@ -73,6 +76,13 @@ const LandingPage: React.FC = () => {
         theme={theme}
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
+      />
+
+      {/* Contact Modal */}
+      <ContactModal
+        theme={theme}
+        isOpen={isContactOpen}
+        onClose={() => setIsContactOpen(false)}
       />
     </main>
   );
