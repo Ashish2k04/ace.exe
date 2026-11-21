@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, CheckCircle2 } from 'lucide-react';
 
 interface ContactModalProps {
@@ -66,6 +66,49 @@ export const ContactModal: React.FC<ContactModalProps> = ({ theme, isOpen, onClo
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const previousActiveElementRef = useRef<HTMLElement | null>(null);
+  const starCanvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Draw stars scoped to the modal container
+  const drawStars = useCallback(() => {
+    const canvas = starCanvasRef.current;
+    if (!canvas) return;
+    const parent = canvas.parentElement;
+    if (!parent) return;
+
+    canvas.width = parent.offsetWidth;
+    canvas.height = parent.offsetHeight;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const starCount = Math.floor((canvas.width * canvas.height) / 3500);
+    const starColor = isDark ? '255,255,255' : '0,0,0';
+
+    for (let i = 0; i < starCount; i++) {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
+      const radius = Math.random() * 0.8 + 0.1;
+      const opacity = Math.random() * 0.5 + 0.1;
+
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${starColor},${opacity})`;
+      ctx.fill();
+    }
+  }, [isDark]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    drawStars();
+    const timer = setTimeout(drawStars, 120);
+    window.addEventListener('resize', drawStars);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', drawStars);
+    };
+  }, [isOpen, drawStars]);
 
   const [formData, setFormData] = useState<FormState>({
     name: '',
@@ -286,11 +329,19 @@ export const ContactModal: React.FC<ContactModalProps> = ({ theme, isOpen, onClo
       {/* Modal Dialog */}
       <div
         ref={modalRef}
-        className={`relative z-10 w-full max-w-[420px] sm:max-w-[440px] rounded-3xl border ${borderColor} ${modalBg} ${textColor} p-5 sm:p-6 shadow-2xl transition-all duration-300 my-auto`}
+        className={`relative z-10 w-full max-w-[420px] sm:max-w-[440px] rounded-3xl border ${borderColor} ${modalBg} ${textColor} p-5 sm:p-6 shadow-2xl transition-all duration-300 my-auto overflow-hidden`}
       >
-        <h2 id="contact-modal-title" className="sr-only">
-          Get in Touch with Ashish Tiwari
-        </h2>
+        {/* Star background canvas */}
+        <canvas
+          ref={starCanvasRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0 w-full h-full"
+        />
+
+        <div className="relative z-10">
+          <h2 id="contact-modal-title" className="sr-only">
+            Get in Touch with Ashish Tiwari
+          </h2>
 
         {/* Top Prominent CLOSE Button */}
         <button
@@ -474,6 +525,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ theme, isOpen, onClo
           >
             <InstagramIcon className="w-4 h-4 opacity-80 hover:opacity-100" />
           </a>
+        </div>
         </div>
       </div>
     </div>
