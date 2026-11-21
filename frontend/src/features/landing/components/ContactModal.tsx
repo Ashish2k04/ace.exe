@@ -263,10 +263,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({ theme, isOpen, onClo
           ref={closeButtonRef}
           type="button"
           onClick={onClose}
-          className={`w-full py-2 px-4 mb-4 rounded-xl border ${borderColor} hover:border-current bg-transparent ${textColor} text-xs font-mono uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer active:scale-[0.99]`}
+          className="w-full py-2 px-4 mb-4 rounded-xl border border-red-500/60 hover:border-red-400 bg-red-600 hover:bg-red-500 text-white text-xs font-mono uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer active:scale-[0.99] shadow-md shadow-red-600/20"
           aria-label="Close modal"
         >
-          <X className="w-3.5 h-3.5 opacity-80" />
+          <X className="w-3.5 h-3.5" />
           <span>CLOSE</span>
         </button>
 
@@ -410,14 +410,16 @@ export const ContactModal: React.FC<ContactModalProps> = ({ theme, isOpen, onClo
             <LinkedinIcon className="w-4 h-4 opacity-80 hover:opacity-100" />
           </a>
 
-          {/* X / Twitter (Non-clickable / disabled per instruction not to invent URLs) */}
-          <span
-            aria-disabled="true"
-            title="X / Twitter (Profile not linked)"
-            className={`w-9 h-9 rounded-xl border ${borderColor} flex items-center justify-center ${textColor} opacity-35 cursor-not-allowed select-none`}
+          {/* X / Twitter */}
+          <a
+            href="https://x.com/alienx_js"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="X (Twitter) Profile"
+            className={`w-9 h-9 rounded-xl border ${borderColor} hover:border-current flex items-center justify-center ${textColor} transition-all duration-200 cursor-pointer active:scale-95`}
           >
-            <XTwitterIcon className="w-3.5 h-3.5" />
-          </span>
+            <XTwitterIcon className="w-3.5 h-3.5 opacity-80 hover:opacity-100" />
+          </a>
 
           {/* Instagram */}
           <a
