@@ -12,7 +12,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
   const isDark = theme === 'dark';
   const textColor = isDark ? 'text-neutral-300' : 'text-neutral-700';
   const highlightColor = isDark ? 'text-white' : 'text-black';
-  const borderColor = isDark ? 'border-white/15' : 'border-black/15';
 
   return (
     <section
