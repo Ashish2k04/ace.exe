@@ -1,58 +1,7 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router';
 import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
-
-interface ProjectItem {
-  id: string;
-  title: string;
-  category: string;
-  description: string;
-  imageUrl: string;
-}
-
-const PROJECTS: ProjectItem[] = [
-  {
-    id: 'ace-exe',
-    title: 'ace.exe',
-    category: 'Admin Portal & OS Terminal',
-    description: 'Minimalist monochrome dashboard with black hole particle physics and custom shell.',
-    imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'cloudvault',
-    title: 'CloudVault',
-    category: 'Distributed Object Storage',
-    description: 'High-availability S3-compatible blob storage with automated chunking and AES-256 encryption.',
-    imageUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'flowstate',
-    title: 'FlowState',
-    category: 'Developer Workflow Engine',
-    description: 'Real-time collaborative task runner, git commit hooks analyzer, and sprint velocity tracker.',
-    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'hyperion',
-    title: 'Hyperion',
-    category: 'Telemetry & Observability',
-    description: 'Sub-millisecond metrics aggregator streaming time-series telemetry data into low-latency charts.',
-    imageUrl: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'pulse',
-    title: 'Pulse',
-    category: 'Realtime Audio & Chat',
-    description: 'Peer-to-peer encrypted messaging and crystal-clear voice rooms powered by WebRTC.',
-    imageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'synthetix',
-    title: 'Synthetix',
-    category: 'AI Code Intelligence',
-    description: 'Local vector search and static analysis agent for multi-repo architectural insights.',
-    imageUrl: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80',
-  },
-];
+import { PROJECTS, type Project } from '../../projects/data/projects';
 
 interface ProjectsCarouselProps {
   theme: 'dark' | 'light';
@@ -63,6 +12,7 @@ export const ProjectsCarousel: React.FC<ProjectsCarouselProps> = ({
   theme,
   className = '',
 }) => {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const isDark = theme === 'dark';
 
@@ -89,8 +39,8 @@ export const ProjectsCarousel: React.FC<ProjectsCarouselProps> = ({
     setCurrentIndex((prev) => (prev + 1) % total);
   };
 
-  const handlePreview = (project: ProjectItem) => {
-    alert(`Previewing: ${project.title}\n\n${project.description}`);
+  const handlePreview = (project: Project) => {
+    navigate(`/projects/${project.id}`);
   };
 
   // Touch gesture swipe handling for mobile
