@@ -1,12 +1,16 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import Login from "../features/auth/pages/Login";
-import {Navigate} from 'react-router'
 import LandingPage from "../features/landing/pages/LandingPage";
+import ProjectDetailsPage from "../features/projects/pages/ProjectDetailsPage";
 
 export const AppRoutes = createBrowserRouter([
     {
         path: "/",
         element: <LandingPage />
+    },
+    {
+        path: "/projects/:slug",
+        element: <ProjectDetailsPage />
     },
     {
         path: "/admin/login",
