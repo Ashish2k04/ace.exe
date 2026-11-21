@@ -37,6 +37,7 @@ interface ProfilePanelProps {
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
   onAskAi?: () => void;
+  onGetInTouch?: () => void;
   className?: string;
 }
 
@@ -44,6 +45,7 @@ export const ProfilePanel: React.FC<ProfilePanelProps> = ({
   theme,
   onToggleTheme,
   onAskAi,
+  onGetInTouch,
   className = '',
 }) => {
   const isDark = theme === 'dark';
@@ -59,7 +61,7 @@ export const ProfilePanel: React.FC<ProfilePanelProps> = ({
   };
 
   const handleGetInTouch = () => {
-    window.location.href = 'mailto:contact@ashishtiwari.dev';
+    onGetInTouch?.();
   };
 
   const handleAskAi = () => {
