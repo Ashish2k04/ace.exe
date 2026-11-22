@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import ProfilePanel from '../components/ProfilePanel';
 import AboutSection from '../components/AboutSection';
 import SkillsMarquee from '../components/SkillsMarquee';
 import ProjectsCarousel from '../components/ProjectsCarousel';
-import EchoChatPanel from '../components/EchoChatPanel';
 import ContactModal from '../components/ContactModal';
 import StarField from '../../../components/StarField';
 import { SmoothCursor } from '@/components/ui/smooth-cursor';
+const EchoChatPanel = lazy(
+  () => import('../components/EchoChatPanel')
+)
 
 const THEME_STORAGE_KEY = 'ace_theme';
 
@@ -72,11 +74,15 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* Echo AI Chat Panel */}
-      <EchoChatPanel
-        theme={theme}
-        isOpen={isChatOpen}
-        onClose={() => setIsChatOpen(false)}
-      />
+      <Suspense fallback={null}>
+        {isChatOpen && (
+          <EchoChatPanel
+            theme={theme}
+            isOpen={isChatOpen}
+            onClose={() => setIsChatOpen(false)}
+          />
+        )}
+      </Suspense>
 
       {/* Contact Modal */}
       <ContactModal
