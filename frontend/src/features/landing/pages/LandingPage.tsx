@@ -5,7 +5,11 @@ import SkillsMarquee from '../components/SkillsMarquee';
 import ProjectsCarousel from '../components/ProjectsCarousel';
 import ContactModal from '../components/ContactModal';
 import StarField from '../../../components/StarField';
-import { SmoothCursor } from '@/components/ui/smooth-cursor';
+const SmoothCursor = lazy(() =>
+  import('@/components/ui/smooth-cursor').then((module) => ({
+    default: module.SmoothCursor,
+  }))
+);
 const EchoChatPanel = lazy(
   () => import('../components/EchoChatPanel')
 )
@@ -46,7 +50,10 @@ const LandingPage: React.FC = () => {
     <main
       className={`relative min-h-screen w-full ${pageBg} flex flex-col lg:flex-row antialiased selection:bg-white selection:text-black transition-colors duration-300 overflow-x-hidden select-none`}
     >
-      <SmoothCursor />
+      <Suspense fallback={null}>
+        <SmoothCursor />
+      </Suspense>
+      
       {/* Star field — only on dark theme */}
       <StarField theme={theme} />
 
