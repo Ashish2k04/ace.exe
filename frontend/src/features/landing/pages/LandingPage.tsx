@@ -3,12 +3,14 @@ import ProfilePanel from '../components/ProfilePanel';
 import AboutSection from '../components/AboutSection';
 import SkillsMarquee from '../components/SkillsMarquee';
 import ProjectsCarousel from '../components/ProjectsCarousel';
-import ContactModal from '../components/ContactModal';
 import StarField from '../../../components/StarField';
 const SmoothCursor = lazy(() =>
   import('@/components/ui/smooth-cursor').then((module) => ({
     default: module.SmoothCursor,
   }))
+);
+const ContactModal = lazy(
+  () => import('../components/ContactModal')
 );
 const EchoChatPanel = lazy(
   () => import('../components/EchoChatPanel')
@@ -53,7 +55,7 @@ const LandingPage: React.FC = () => {
       <Suspense fallback={null}>
         <SmoothCursor />
       </Suspense>
-      
+
       {/* Star field — only on dark theme */}
       <StarField theme={theme} />
 
@@ -92,11 +94,15 @@ const LandingPage: React.FC = () => {
       </Suspense>
 
       {/* Contact Modal */}
-      <ContactModal
-        theme={theme}
-        isOpen={isContactOpen}
-        onClose={() => setIsContactOpen(false)}
-      />
+      <Suspense fallback={null}>
+        {isContactOpen && (
+          <ContactModal
+            theme={theme}
+            isOpen={isContactOpen}
+            onClose={() => setIsContactOpen(false)}
+          />
+        )}
+      </Suspense>
     </main>
   );
 };
