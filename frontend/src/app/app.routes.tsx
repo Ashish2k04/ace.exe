@@ -7,6 +7,9 @@ const LandingPage = lazy(() => import("../features/landing/pages/LandingPage"));
 const ProjectDetailsPage = lazy(
   () => import("../features/projects/pages/ProjectDetailsPage")
 );
+const AdminDashboard = lazy(
+  () => import("../features/admin/pages/AdminDashboard")
+);
 const PageLoader = () => <SpaceLoader />;
 
 const withSuspense = (element: React.ReactNode) => (
@@ -29,7 +32,11 @@ export const AppRoutes = createBrowserRouter([
     element: withSuspense(<Login />),
   },
   {
+    path: "/admin/dashboard",
+    element: withSuspense(<AdminDashboard />),
+  },
+  {
     path: "/admin",
-    element: <Navigate to="/admin/login" replace />,
+    element: <Navigate to="/admin/dashboard" replace />,
   },
 ]);
