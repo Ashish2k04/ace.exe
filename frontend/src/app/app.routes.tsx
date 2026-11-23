@@ -8,7 +8,7 @@ const ProjectDetailsPage = lazy(
   () => import("../features/projects/pages/ProjectDetailsPage")
 );
 
-const PageLoader = () => <SpaceLoader />;
+const PageLoader = () => <h1 className="loader"></h1>;
 
 const withSuspense = (element: React.ReactNode) => (
   <Suspense fallback={<PageLoader />}>
