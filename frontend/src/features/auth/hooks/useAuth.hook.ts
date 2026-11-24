@@ -32,8 +32,13 @@ export function useAuth () {
         }
      }
 
+     function handleLogout () {
+        setUser(null);
+     }
+
      return {
         handleLogin,
+        handleLogout,
         user,
         loading
      }
