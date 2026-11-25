@@ -12,6 +12,7 @@ import ProfileImageSection from '../components/ProfileImageSection';
 import AboutEditor from '../components/AboutEditor';
 import SkillsManager from '../components/SkillsManager';
 import ResumeManager from '../components/ResumeManager';
+import SocialLinksManager, { type SocialLinks } from '../components/SocialLinksManager';
 import ProjectForm from '../components/ProjectForm';
 import ProjectList from '../components/ProjectList';
 import ConfirmDialog from '../components/ConfirmDialog';
@@ -23,6 +24,12 @@ export const AdminDashboard: React.FC = () => {
 
   // Local dashboard states
   const [profileName, setProfileName] = useState('Ashish Tiwari');
+  const [socialLinks, setSocialLinks] = useState<SocialLinks>({
+    linkedin: 'https://linkedin.com/in/ashish2k04',
+    instagram: 'https://www.instagram.com/alienx.js/',
+    github: 'https://github.com/Ashish2k04',
+    x: 'https://x.com/alienx_js',
+  });
   const [skills, setSkills] = useState<string[]>([
     'HTML',
     'CSS',
@@ -93,6 +100,11 @@ export const AdminDashboard: React.FC = () => {
 
   const handleUpdateResume = async (file: File) => {
     addToast(`Resume "${file.name}" validated and updated.`, 'success');
+  };
+
+  const handleUpdateSocialLinks = async (updatedLinks: SocialLinks) => {
+    setSocialLinks(updatedLinks);
+    addToast('Social media links updated successfully locally.', 'success');
   };
 
   const handleAddProject = async (newProjData: Omit<Project, 'id'>) => {
@@ -198,7 +210,13 @@ export const AdminDashboard: React.FC = () => {
           {/* Section E: Resume Management */}
           <ResumeManager onUpdate={handleUpdateResume} />
 
-          {/* Section F: Project Management (Add Form + All Projects List) */}
+          {/* Section F: Social Media Links Management */}
+          <SocialLinksManager
+            currentLinks={socialLinks}
+            onUpdate={handleUpdateSocialLinks}
+          />
+
+          {/* Section G: Project Management (Add Form + All Projects List) */}
           <section
             aria-label="Project Management"
             className="w-full rounded-2xl sm:rounded-3xl border border-white/20 bg-black/60 p-5 sm:p-7 backdrop-blur-md transition-colors hover:border-white/30 space-y-6"
