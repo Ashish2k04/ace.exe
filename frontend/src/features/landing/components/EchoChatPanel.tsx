@@ -195,7 +195,7 @@ const EchoChatPanel: React.FC<EchoChatPanelProps> = ({ theme, isOpen, onClose })
         </div>
 
         {/* Messages Area */}
-        <div className="relative z-10 flex-1 overflow-y-auto px-4 py-5 space-y-3">
+        <div className="relative z-10 flex-1 overflow-y-auto px-4 py-5 space-y-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-5">
               {/* Empty state */}
