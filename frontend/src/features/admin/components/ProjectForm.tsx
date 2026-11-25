@@ -296,7 +296,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onAddProject }) => {
       </div>
 
       {/* 5. Project Skills Sub-Box */}
-      <div className="rounded-2xl border border-white/20 bg-neutral-900/40 p-4 space-y-3">
+      <div className="rounded-2xl border border-white/20 bg-transparent p-4 space-y-3">
         <div className="flex items-center gap-2">
           <label htmlFor="admin-project-skill-input" className="sr-only">
             Enter Skill name to add
