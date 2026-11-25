@@ -40,7 +40,7 @@ export const ProjectDetailsPage: React.FC = () => {
   const isDark = theme === 'dark';
   const pageBg = isDark ? 'bg-black text-white' : 'bg-white text-black';
   const borderColor = isDark ? 'border-white/20' : 'border-black/20';
-  const cardBg = isDark ? 'bg-neutral-950/70 backdrop-blur-xl' : 'bg-white/70 backdrop-blur-xl';
+  const cardBg = 'bg-transparent';
   const dividerColor = isDark ? 'bg-white/15' : 'bg-black/15';
   const textColor = isDark ? 'text-white' : 'text-black';
   const subTextColor = isDark ? 'text-neutral-400' : 'text-neutral-600';
