@@ -98,7 +98,7 @@ export const ProfileImageSection: React.FC<ProfileImageSectionProps> = ({
   return (
     <section
       aria-label="Profile Picture Management"
-      className="w-full rounded-2xl sm:rounded-3xl border border-white/20 bg-black/60 p-4 sm:p-6 backdrop-blur-md transition-colors hover:border-white/30"
+      className="w-full rounded-2xl sm:rounded-3xl border border-white/20 bg-transparent p-4 sm:p-6 transition-colors hover:border-white/30"
     >
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         {/* Upload Button / Trigger */}
