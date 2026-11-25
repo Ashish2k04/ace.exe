@@ -46,7 +46,7 @@ export const ProfileNameSection: React.FC<ProfileNameSectionProps> = ({
   return (
     <section
       aria-label="Profile Name Management"
-      className="w-full rounded-2xl sm:rounded-3xl border border-white/20 bg-black/60 p-4 sm:p-6 backdrop-blur-md transition-colors hover:border-white/30"
+      className="w-full rounded-2xl sm:rounded-3xl border border-white/20 bg-transparent p-4 sm:p-6 transition-colors hover:border-white/30"
     >
       <form
         onSubmit={handleSubmit}
