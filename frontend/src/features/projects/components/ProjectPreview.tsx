@@ -50,10 +50,24 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({ project, theme }
             href={project.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`w-full py-3 px-4 rounded-xl border ${borderColor} ${borderHover} ${buttonBg} ${textColor} text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer active:scale-[0.99] group`}
+            className={`group relative w-full py-3 px-4 rounded-xl border ${borderColor} ${borderHover} bg-transparent overflow-hidden ${textColor} text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-colors duration-500 ease-out cursor-pointer active:scale-[0.99]`}
           >
-            <span>Live Preview</span>
-            <ArrowUpRight className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+            {/* Rising water fill layer */}
+            <span
+              aria-hidden="true"
+              className={`absolute inset-0 ${
+                isDark ? 'bg-white' : 'bg-black'
+              } translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0 pointer-events-none`}
+            />
+            {/* Button text & icon */}
+            <span
+              className={`relative z-10 flex items-center justify-center gap-2 transition-colors duration-500 ease-out ${
+                isDark ? 'group-hover:text-black' : 'group-hover:text-white'
+              }`}
+            >
+              <span>Live Preview</span>
+              <ArrowUpRight className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+            </span>
           </a>
         ) : (
           <button
@@ -72,10 +86,24 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({ project, theme }
             href={project.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={`w-full py-3 px-4 rounded-xl border ${borderColor} ${borderHover} ${buttonBg} ${textColor} text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer active:scale-[0.99] group`}
+            className={`group relative w-full py-3 px-4 rounded-xl border ${borderColor} ${borderHover} bg-transparent overflow-hidden ${textColor} text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-colors duration-500 ease-out cursor-pointer active:scale-[0.99]`}
           >
-            <span>Source Code</span>
-            <ArrowUpRight className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+            {/* Rising water fill layer */}
+            <span
+              aria-hidden="true"
+              className={`absolute inset-0 ${
+                isDark ? 'bg-white' : 'bg-black'
+              } translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0 pointer-events-none`}
+            />
+            {/* Button text & icon */}
+            <span
+              className={`relative z-10 flex items-center justify-center gap-2 transition-colors duration-500 ease-out ${
+                isDark ? 'group-hover:text-black' : 'group-hover:text-white'
+              }`}
+            >
+              <span>Source Code</span>
+              <ArrowUpRight className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+            </span>
           </a>
         ) : (
           <button
