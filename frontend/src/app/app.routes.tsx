@@ -10,6 +10,9 @@ const ProjectDetailsPage = lazy(
 const AdminDashboard = lazy(
   () => import("../features/admin/pages/AdminDashboard")
 );
+const NotFoundPage = lazy(
+  () => import("../components/ui/NotFoundPage")
+);
 const PageLoader = () => <SpaceLoader />;
 
 const withSuspense = (element: React.ReactNode) => (
@@ -38,5 +41,9 @@ export const AppRoutes = createBrowserRouter([
   {
     path: "/admin",
     element: <Navigate to="/admin/dashboard" replace />,
+  },
+  {
+    path: "*",
+    element: withSuspense(<NotFoundPage />),
   },
 ]);
