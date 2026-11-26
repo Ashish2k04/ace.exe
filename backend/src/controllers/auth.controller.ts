@@ -86,6 +86,15 @@ async function login(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+async function resetPassword(req: Request, res: Response, next: NextFunction) {
+   try{
+      
+   }
+   catch(error){
+    next(error)
+   }
+}
+
 async function logout(req: Request, res: Response, next: NextFunction){
     try{
        res.clearCookie("token", {
