@@ -88,21 +88,43 @@ async function login(req: Request, res: Response, next: NextFunction) {
 
 async function resetPassword(req: Request, res: Response, next: NextFunction) {
    try{
-      const {password} = req.body;
+      const {oldPassword, newPassword} = req.body;
 
-      if(!password){
+      const userId = (req as any).user.id;
+
+      if(!oldPassword || !newPassword){
         return res.status(401).json({
-          message: "Password should not be empty.",
+          message: "Old and New Password Field Should Not Be Empty.",
           success: false
         })
       }
 
-      const setNewPassword = await Admin.findOneAndUpdate({password: password});
+      const getUser = await Admin.findById(userId).select("+password");
+
+      if(!getUser){
+        return res.status(404).json({
+          message: "Password error.",
+          success: false
+        })
+      }
+
+      const userPassword = await (getUser as typeof getUser & {
+        comparePassword(oldPassword: string): Promise<boolean>;
+      }).comparePassword(oldPassword);
+
+      if(!userPassword){
+        return res.status(401).json({
+            message: "Your old password is invalid.",
+            success: false
+        })
+      }
+      
+      getUser.password = newPassword;
+      await getUser.save();
 
       return res.status(200).json({
         message: "Password changed successfully.",
         success: true,
-        pass: setNewPassword?.password
       })
 
    }
