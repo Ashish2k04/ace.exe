@@ -219,7 +219,7 @@ export const AdminDashboard: React.FC = () => {
           {/* Section G: Project Management (Add Form + All Projects List) */}
           <section
             aria-label="Project Management"
-            className="w-full rounded-2xl sm:rounded-3xl border border-white/20 bg-black/60 p-5 sm:p-7 backdrop-blur-md transition-colors hover:border-white/30 space-y-6"
+            className="w-full rounded-2xl sm:rounded-3xl border border-white/20 bg-transparent p-5 sm:p-7 transition-colors hover:border-white/30 space-y-6"
           >
             <ProjectForm onAddProject={handleAddProject} />
             <ProjectList
