@@ -88,7 +88,23 @@ async function login(req: Request, res: Response, next: NextFunction) {
 
 async function resetPassword(req: Request, res: Response, next: NextFunction) {
    try{
-      
+      const {password} = req.body;
+
+      if(!password){
+        return res.status(401).json({
+          message: "Password should not be empty.",
+          success: false
+        })
+      }
+
+      const setNewPassword = await Admin.findOneAndUpdate({password: password});
+
+      return res.status(200).json({
+        message: "Password changed successfully.",
+        success: true,
+        pass: setNewPassword?.password
+      })
+
    }
    catch(error){
     next(error)
