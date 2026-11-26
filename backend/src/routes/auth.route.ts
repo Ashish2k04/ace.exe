@@ -8,7 +8,7 @@ const authRouter = Router();
 
 authRouter.post("/register", rateLimitMiddleware(3), verifyAdminRegistrationKey, validateUserCredentials, register);
 authRouter.post("/login", rateLimitMiddleware(5), validateUserCredentials, login);
-authRouter.post("/resetPassword", resetPassword);
+authRouter.patch("/resetPassword", resetPassword);
 authRouter.post("/logout", logout);
 
 export default authRouter;
