@@ -116,5 +116,6 @@ async function logout(req: Request, res: Response, next: NextFunction){
 export {
     register,
     login,
+    resetPassword,
     logout
 }
