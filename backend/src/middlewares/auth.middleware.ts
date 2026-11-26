@@ -1,6 +1,7 @@
 import {config} from "../config/config.js"
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import Admin from "../models/admin.model.js";
 
 
 async function authMiddleware(req: Request, res: Response, next: NextFunction) {
@@ -16,6 +17,23 @@ async function authMiddleware(req: Request, res: Response, next: NextFunction) {
 
     try {
         const decoded = jwt.verify(token, config.JWT_SECRET as string);
+
+        if (typeof decoded === "string") {
+            return res.status(401).json({
+                message: "Invalid or expired token.",
+                success: false
+            });
+        }
+
+        const findUserInDB = await Admin.findById(decoded.id);
+
+        if(!findUserInDB){
+            return res.status(404).json({
+                message: "Missing or Invalid Admin ID.",
+                success: false
+            })
+        }
+        
         (req as any).user = decoded;
         next();
     } catch (error) {
