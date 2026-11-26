@@ -170,7 +170,7 @@ export const SocialLinksManager: React.FC<SocialLinksManagerProps> = ({
   return (
     <section
       aria-label="Social Media Links Management"
-      className="w-full rounded-2xl sm:rounded-3xl border border-white/20 bg-black/60 p-4 sm:p-6 backdrop-blur-md transition-colors hover:border-white/30 space-y-4 sm:space-y-5"
+      className="w-full rounded-2xl sm:rounded-3xl border border-white/20 bg-transparent p-4 sm:p-6 transition-colors hover:border-white/30 space-y-4 sm:space-y-5"
     >
       <form onSubmit={handleSubmit} noValidate className="space-y-4">
         {/* Header row */}
