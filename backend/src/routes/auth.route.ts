@@ -9,7 +9,7 @@ const authRouter = Router();
 
 authRouter.post("/register", rateLimitMiddleware(3), verifyAdminRegistrationKey, validateUserCredentials, register);
 authRouter.post("/login", rateLimitMiddleware(5), validateUserCredentials, login);
-authRouter.patch("/updateEmail", validateEmail, authMiddleware, updateEmail);
+authRouter.patch("/updateEmail", authMiddleware, validateEmail, updateEmail);
 authRouter.patch("/resetPassword", authMiddleware, resetPassword);
 authRouter.post("/logout", logout);
 
