@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { userQuery } from "../services/embedding.service.js";
 import { askAi } from "../services/llm.service.js";
 
-async function chatWithEcho(req: Request, res: Response, next: NextFunction){
+async function chatWithEcho(req: Request, res: Response, next: NextFunction) {
     try{
        const { question } = req.body;
 
