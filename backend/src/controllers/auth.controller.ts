@@ -86,6 +86,15 @@ async function login(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+async function updateEmail(req: Request, res: Response, next: NextFunction) {
+      try{
+        
+      }
+      catch(error){
+        next(error);
+      }
+}
+
 async function resetPassword(req: Request, res: Response, next: NextFunction) {
    try{
       const {oldPassword, newPassword} = req.body;
@@ -154,6 +163,7 @@ async function logout(req: Request, res: Response, next: NextFunction) {
 export {
     register,
     login,
+    updateEmail,
     resetPassword,
     logout
 }
