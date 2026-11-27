@@ -2,7 +2,7 @@ import type {Request, Response, NextFunction} from "express";
 import Skill from "../models/skill.model.js";
 import mongoose from "mongoose";
 
-async function createSkill(req: Request, res: Response, next: NextFunction){
+async function createSkill(req: Request, res: Response, next: NextFunction) {
     try{
        const {name} = req.body;
 
@@ -37,7 +37,7 @@ async function createSkill(req: Request, res: Response, next: NextFunction){
     }
 }
 
-async function getSkills(req: Request, res: Response, next: NextFunction){
+async function getSkills(req: Request, res: Response, next: NextFunction) {
     try{
         const skills = await Skill.find().sort({name: 1});
 
@@ -52,7 +52,7 @@ async function getSkills(req: Request, res: Response, next: NextFunction){
     }
 }
 
-async function deleteSkill(req: Request, res: Response, next: NextFunction){
+async function deleteSkill(req: Request, res: Response, next: NextFunction) {
        try{
          const skillId = req.params.id;
 
