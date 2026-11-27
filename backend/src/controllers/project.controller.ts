@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import Project from '../models/project.model.js';
 import imagekitUpload, {deleteImage} from '../services/imagekit.service.js';
 
-async function createProject(req: Request, res: Response, next: NextFunction){
+async function createProject(req: Request, res: Response, next: NextFunction) {
      try{
         const {title, description, liveUrl, githubUrl} = req.body;
         const skills = JSON.parse(req.body.skills || "[]");
@@ -70,7 +70,7 @@ async function createProject(req: Request, res: Response, next: NextFunction){
      }
 };
 
-async function getProject(req: Request, res: Response, next: NextFunction){
+async function getProject(req: Request, res: Response, next: NextFunction) {
     try{
         const projects = await Project.find().populate("skills", "name");
 
@@ -85,7 +85,7 @@ async function getProject(req: Request, res: Response, next: NextFunction){
     }
 }
 
-async function deleteProject(req: Request, res: Response, next: NextFunction){
+async function deleteProject(req: Request, res: Response, next: NextFunction) {
     try{
        const projectId = req.params.id;
 
