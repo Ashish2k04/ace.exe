@@ -27,7 +27,7 @@ async function register(req: Request, res: Response, next: NextFunction) {
     try{
       const {email, password} = req.body;
        
-      const userExist = await Admin.findOne();
+      const userExist = await Admin.exists({});
 
       if(userExist){
         return res.status(409).json({
