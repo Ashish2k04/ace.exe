@@ -4,7 +4,7 @@ import Admin from "../models/admin.model.js";
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-async function sendTokenResponse(user: HydratedDocument<{ email: string; }>, res: Response, message: string){
+async function sendTokenResponse(user: HydratedDocument<{ email: string; }>, res: Response, message: string) {
       const token = jwt.sign({id: user._id}, config.JWT_SECRET, {expiresIn: "1d"});
 
       res.cookie("token", token, {
@@ -133,7 +133,7 @@ async function resetPassword(req: Request, res: Response, next: NextFunction) {
    }
 }
 
-async function logout(req: Request, res: Response, next: NextFunction){
+async function logout(req: Request, res: Response, next: NextFunction) {
     try{
        res.clearCookie("token", {
         httpOnly: true,
