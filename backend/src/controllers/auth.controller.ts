@@ -101,6 +101,13 @@ async function updateEmail(req: Request, res: Response, next: NextFunction) {
 
           const getUser = await Admin.findById(userId);
 
+          if(getUser?.email === email) {
+            return res.status(409).json({
+              message: "This email is already available in Database.",
+              success: false
+            })
+          }
+
           if(!getUser){
             return res.status(404).json({
               message: "Cannot find the user by id.",
