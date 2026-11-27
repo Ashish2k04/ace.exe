@@ -93,7 +93,7 @@ async function updateEmail(req: Request, res: Response, next: NextFunction) {
           const userId = (req as any).user.id;
 
           if(!email){
-            return res.status(401).json({
+            return res.status(400).json({
               message: "Email Should Not Be Empty.",
               success: false
             })
