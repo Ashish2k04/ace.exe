@@ -3,7 +3,7 @@ import Profile from "../models/profile.model.js";
 import Admin from "../models/admin.model.js";
 import imagekitUpload, { deleteImage } from "../services/imagekit.service.js"
 
-async function createProfile(req: Request, res: Response, next: NextFunction){
+async function createProfile(req: Request, res: Response, next: NextFunction) {
       const {name, about} = req.body;
 
       try{
@@ -76,7 +76,7 @@ async function createProfile(req: Request, res: Response, next: NextFunction){
       }
 }
 
-async function getProfile(req: Request, res: Response, next: NextFunction){
+async function getProfile(req: Request, res: Response, next: NextFunction) {
        try{
            const user = await Profile.findOne();
 
@@ -104,7 +104,7 @@ async function getProfile(req: Request, res: Response, next: NextFunction){
 }
 
 
-async function updateProfile(req: Request, res: Response, next: NextFunction){
+async function updateProfile(req: Request, res: Response, next: NextFunction) {
      try{
         const {name, about} = req.body;
 
