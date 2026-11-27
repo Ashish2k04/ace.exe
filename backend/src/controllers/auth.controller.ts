@@ -27,11 +27,11 @@ async function register(req: Request, res: Response, next: NextFunction) {
     try{
       const {email, password} = req.body;
        
-      const userExist = await Admin.findOne({email});
+      const userExist = await Admin.findOne();
 
       if(userExist){
         return res.status(409).json({
-          message: "User already exist.",
+          message: "Delete existing admin credentials from DB to make new one.",
           success: false
         })
       }
