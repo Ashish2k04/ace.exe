@@ -88,7 +88,33 @@ async function login(req: Request, res: Response, next: NextFunction) {
 
 async function updateEmail(req: Request, res: Response, next: NextFunction) {
       try{
-        
+          const { email } = req.body;
+
+          const userId = (req as any).user.id;
+
+          if(!email){
+            return res.status(401).json({
+              message: "Email Should Not Be Empty.",
+              success: false
+            })
+          }
+
+          const getUser = await Admin.findById(userId);
+
+          if(!getUser){
+            return res.status(404).json({
+              message: "Cannot find the user by id.",
+              success: false
+            })
+          }
+
+          getUser.email = email;
+          await getUser.save();
+
+          return res.status(200).json({
+              message: "Email changed successfully.",
+              success: true,
+          })
       }
       catch(error){
         next(error);
