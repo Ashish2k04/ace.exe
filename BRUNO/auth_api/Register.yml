@@ -13,7 +13,7 @@ http:
     type: json
     data: |
       {
-        "email": "{{email_2}}",
+        "email": "{{email}}",
         "password": "{{password}}"
       }
   auth: inherit
