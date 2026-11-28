@@ -7,6 +7,11 @@ const embeddings = new CohereEmbeddings({
    model: "embed-english-v3.0"
 })
 
+const fallBackEmbeddings = new CohereEmbeddings({
+   apiKey: config.COHERE_QUESTION_REWRITER_API_KEY,
+   model: "embed-english-v3.0"
+})
+
 const pc = new Pinecone({
     apiKey: config.PINECONE_API_KEY
 })
@@ -14,7 +19,14 @@ const pc = new Pinecone({
 const index = pc.index(config.PINECONE_INDEX_NAME);
 
 export async function userQuery(question: string) {
-   const queryEmbedding = await embeddings.embedQuery(question);
+   let queryEmbedding: number[];
+   try{
+      queryEmbedding = await embeddings.embedQuery(question);
+   }
+   catch(error) {
+      console.error("Primary Embedding Failed. Trying fallback...", error);
+      queryEmbedding = await fallBackEmbeddings.embedQuery(question); 
+   }
 
    const result = await index.query({
      vector: queryEmbedding,
