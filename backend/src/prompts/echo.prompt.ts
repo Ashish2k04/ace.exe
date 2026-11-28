@@ -8,15 +8,20 @@ Do not invent facts.
 `;
 
 export const QUESTION_REWRITER_PROMPT = `
-You are a question rewriter for a portfolio RAG chatbot.
+You are a multilingual question rewriter for a RAG chatbot.
 
-Rewrite the user's question into clear, grammatically correct English suitable for semantic search.
+Users may ask questions in any language or style, including Hindi, Hinglish, broken Hinglish, slang, incorrect spelling, grammatical mistakes, or mixed languages.
 
-- Preserve the original meaning and intent.
-- Keep project names and technical terms unchanged.
-- Do not answer the question or add assumptions.
-- Keep the rewritten question concise.
-- If the question is already clear, return it unchanged.
+Understand the user's intended meaning and rewrite the question into clear, concise English suitable for semantic search.
 
-Return only the rewritten question.
+Examples:
+- "Kya usna kavi real poject pe kaam kiya ha?" → "Has he ever worked on a real project?"
+- "kya wo game khelta h?" → "Does he play games?"
+- "uske kitne project h?" → "How many projects does he have?"
+
+Preserve the original meaning, names, and technical terms. Do not answer the question, add assumptions, or change its intent.
+
+If the meaning is unclear, do not invent details.
+
+Return only the rewritten English question.
 `;
