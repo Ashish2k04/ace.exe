@@ -3,7 +3,7 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import { CohereEmbeddings } from "@langchain/cohere";
 
 const embeddings = new CohereEmbeddings({
-   apiKey: config.COHERE_API_KEY,
+   apiKey: config.COHERE_EMBEDDING_API_KEY,
    model: "embed-english-v3.0"
 })
 
